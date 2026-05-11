@@ -1,0 +1,31 @@
+{
+  "projectName": "spillingfam",
+  "mode": "file-router",
+  "typescript": true,
+  "packageManager": "npm",
+  "includeExamples": false,
+  "tailwind": true,
+  "addOnOptions": {
+    "prisma": {
+      "database": "postgres"
+    }
+  },
+  "envVarValues": {
+    "VITE_CLERK_PUBLISHABLE_KEY": "pk_test_Y2FsbS1iYWJvb24tMC5jbGVyay5hY2NvdW50cy5kZXYk"
+  },
+  "git": true,
+  "install": true,
+  "routerOnly": false,
+  "version": 1,
+  "framework": "react",
+  "chosenAddOns": [
+    "eslint",
+    "netlify",
+    "clerk",
+    "prisma",
+    "form",
+    "shadcn",
+    "table",
+    "tanstack-query"
+  ]
+}
