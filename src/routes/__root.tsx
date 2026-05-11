@@ -10,6 +10,8 @@ import ClerkProvider from '../integrations/clerk/provider'
 
 import TanStackQueryDevtools from '../integrations/tanstack-query/devtools'
 
+import { Layout } from '../components/Layout'
+
 import appCss from '../styles.css?url'
 
 import type { QueryClient } from '@tanstack/react-query'
@@ -29,7 +31,7 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
         content: 'width=device-width, initial-scale=1',
       },
       {
-        title: 'TanStack Start Starter',
+        title: 'Spilling Familiehistorie',
       },
     ],
     links: [
@@ -39,6 +41,7 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
       },
     ],
   }),
+  component: Layout,
   shellComponent: RootDocument,
 })
 

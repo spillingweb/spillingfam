@@ -3,6 +3,7 @@
 @plugin '@tailwindcss/typography';
 
 @import 'tw-animate-css';
+@import '@xyflow/react/dist/style.css';
 
 @custom-variant dark (&:is(.dark *));
 
