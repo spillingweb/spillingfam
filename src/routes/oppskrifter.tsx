@@ -1,6 +1,10 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { useState } from "react";
-import { Plus, Edit2, Trash2, Clock, ChefHat, Users as UsersIcon, Search } from "lucide-react";
+import { Plus, Edit2, Trash2, Clock, ChefHat, Users as UsersIcon } from "lucide-react";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { PageHeader } from "@/components/ui/page-header";
+import { SearchInput } from "@/components/ui/search-input";
+import { Heading } from "@/components/ui/heading";
 
 interface Recipe {
   id: string;
@@ -124,48 +128,43 @@ Smør til steking`,
 
   return (
     <div className="space-y-8">
-      {/* Page Header */}
-      <div className="mb-10 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
-        <div>
-          <h2 className="text-4xl font-serif text-gray-900 mb-3">Familieoppskrifter</h2>
-          <p className="text-lg text-gray-600">Tradisjonelle oppskrifter bevart gjennom generasjoner</p>
-        </div>
-        <button
-          onClick={() => {
-            setShowForm(!showForm);
-            setEditingId(null);
-            setFormData({ title: "", author: "", cookTime: "", servings: "", ingredients: "", instructions: "", story: "" });
-          }}
-          className="flex items-center gap-2 bg-[#F28B1D] text-white px-8 py-3 hover:bg-[#D45E4C] transition-all font-medium uppercase tracking-wide whitespace-nowrap self-start lg:self-auto"
-        >
-          <Plus className="w-5 h-5" />
-          Legg til ny oppskrift
-        </button>
-      </div>
+      <PageHeader
+        title="Familieoppskrifter"
+        description="Tradisjonelle oppskrifter bevart gjennom generasjoner"
+        action={
+          <button
+            onClick={() => {
+              setShowForm(!showForm);
+              setEditingId(null);
+              setFormData({ title: "", author: "", cookTime: "", servings: "", ingredients: "", instructions: "", story: "" });
+            }}
+            className="flex items-center gap-2 bg-primary text-primary-foreground px-8 py-3 hover:bg-primary/90 transition-all font-medium uppercase tracking-wide whitespace-nowrap"
+          >
+            <Plus className="w-5 h-5" />
+            Legg til ny oppskrift
+          </button>
+        }
+      />
 
-      {/* Search Bar */}
-      <div className="relative max-w-md">
-        <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-        <input
-          type="text"
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          placeholder="Søk i oppskrifter..."
-          className="w-full pl-12 pr-4 py-3 border-2 border-gray-300 focus:ring-0 focus:border-[#F28B1D] transition-all"
-        />
-      </div>
+      <SearchInput
+        value={searchQuery}
+        onChange={setSearchQuery}
+        placeholder="Søk i oppskrifter..."
+      />
 
       {/* Recipe Form */}
       {showForm && (
-        <div className="bg-white shadow-lg border-l-8 border-[#F28B1D] p-8 mb-8">
-          <div>
-            <h3 className="text-2xl font-semibold text-gray-900 mb-6 uppercase tracking-wide">
+        <Card className="border-l-8 border-primary mb-8">
+          <CardHeader>
+            <CardTitle className="uppercase tracking-wide">
               {editingId ? "Rediger oppskrift" : "Ny oppskrift"}
-            </h3>
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2 uppercase tracking-wide">
+                  <label className="block text-sm font-medium text-card-foreground mb-2 uppercase tracking-wide">
                     Navn på oppskrift
                   </label>
                   <input
@@ -173,12 +172,12 @@ Smør til steking`,
                     required
                     value={formData.title}
                     onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                    className="w-full px-4 py-3 border-2 border-gray-300 focus:ring-0 focus:border-[#F28B1D] transition-all"
+                    className="w-full px-4 py-3 border-2 border-input focus:ring-0 focus:border-primary transition-all"
                     placeholder="F.eks. Bestemors eplekake"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2 uppercase tracking-wide">
+                  <label className="block text-sm font-medium text-card-foreground mb-2 uppercase tracking-wide">
                     Oppskriftsforfatter
                   </label>
                   <input
@@ -186,12 +185,12 @@ Smør til steking`,
                     required
                     value={formData.author}
                     onChange={(e) => setFormData({ ...formData, author: e.target.value })}
-                    className="w-full px-4 py-3 border-2 border-gray-300 focus:ring-0 focus:border-[#F28B1D] transition-all"
+                    className="w-full px-4 py-3 border-2 border-input focus:ring-0 focus:border-primary transition-all"
                     placeholder="Navn"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2 uppercase tracking-wide">
+                  <label className="block text-sm font-medium text-card-foreground mb-2 uppercase tracking-wide">
                     Tilberedningstid
                   </label>
                   <input
@@ -199,12 +198,12 @@ Smør til steking`,
                     required
                     value={formData.cookTime}
                     onChange={(e) => setFormData({ ...formData, cookTime: e.target.value })}
-                    className="w-full px-4 py-3 border-2 border-gray-300 focus:ring-0 focus:border-[#F28B1D] transition-all"
+                    className="w-full px-4 py-3 border-2 border-input focus:ring-0 focus:border-primary transition-all"
                     placeholder="F.eks. 60 min"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2 uppercase tracking-wide">
+                  <label className="block text-sm font-medium text-card-foreground mb-2 uppercase tracking-wide">
                     Porsjoner
                   </label>
                   <input
@@ -212,14 +211,14 @@ Smør til steking`,
                     required
                     value={formData.servings}
                     onChange={(e) => setFormData({ ...formData, servings: e.target.value })}
-                    className="w-full px-4 py-3 border-2 border-gray-300 focus:ring-0 focus:border-[#F28B1D] transition-all"
+                    className="w-full px-4 py-3 border-2 border-input focus:ring-0 focus:border-primary transition-all"
                     placeholder="F.eks. 6-8"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2 uppercase tracking-wide">
+                <label className="block text-sm font-medium text-card-foreground mb-2 uppercase tracking-wide">
                   Ingredienser
                 </label>
                 <textarea
@@ -227,13 +226,13 @@ Smør til steking`,
                   value={formData.ingredients}
                   onChange={(e) => setFormData({ ...formData, ingredients: e.target.value })}
                   rows={6}
-                  className="w-full px-4 py-3 border-2 border-gray-300 focus:ring-0 focus:border-[#F28B1D] transition-all resize-none"
+                  className="w-full px-4 py-3 border-2 border-input focus:ring-0 focus:border-primary transition-all resize-none"
                   placeholder="Skriv hver ingrediens på en ny linje..."
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2 uppercase tracking-wide">
+                <label className="block text-sm font-medium text-card-foreground mb-2 uppercase tracking-wide">
                   Fremgangsmåte
                 </label>
                 <textarea
@@ -241,20 +240,20 @@ Smør til steking`,
                   value={formData.instructions}
                   onChange={(e) => setFormData({ ...formData, instructions: e.target.value })}
                   rows={8}
-                  className="w-full px-4 py-3 border-2 border-gray-300 focus:ring-0 focus:border-[#F28B1D] transition-all resize-none"
+                  className="w-full px-4 py-3 border-2 border-input focus:ring-0 focus:border-primary transition-all resize-none"
                   placeholder="Beskriv fremgangsmåten steg for steg..."
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2 uppercase tracking-wide">
+                <label className="block text-sm font-medium text-card-foreground mb-2 uppercase tracking-wide">
                   Historie (valgfritt)
                 </label>
                 <textarea
                   value={formData.story}
                   onChange={(e) => setFormData({ ...formData, story: e.target.value })}
                   rows={4}
-                  className="w-full px-4 py-3 border-2 border-gray-300 focus:ring-0 focus:border-[#F28B1D] transition-all resize-none"
+                  className="w-full px-4 py-3 border-2 border-input focus:ring-0 focus:border-primary transition-all resize-none"
                   placeholder="Del historien bak oppskriften..."
                 />
               </div>
@@ -262,7 +261,7 @@ Smør til steking`,
               <div className="flex gap-3">
                 <button
                   type="submit"
-                  className="bg-[#F28B1D] text-white px-8 py-3 hover:bg-[#D45E4C] transition-all font-medium uppercase tracking-wide"
+                  className="bg-primary text-primary-foreground px-8 py-3 hover:bg-primary/90 transition-all font-medium uppercase tracking-wide"
                 >
                   {editingId ? "Oppdater" : "Publiser"}
                 </button>
@@ -273,35 +272,34 @@ Smør til steking`,
                     setEditingId(null);
                     setFormData({ title: "", author: "", cookTime: "", servings: "", ingredients: "", instructions: "", story: "" });
                   }}
-                  className="bg-gray-200 text-gray-700 px-8 py-3 hover:bg-gray-300 transition-all font-medium uppercase tracking-wide"
+                  className="bg-secondary text-secondary-foreground px-8 py-3 hover:bg-secondary/90 transition-all font-medium uppercase tracking-wide"
                 >
                   Avbryt
                 </button>
               </div>
             </form>
-          </div>
-        </div>
+          </CardContent>
+        </Card>
       )}
 
       {/* Recipes Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {displayedRecipes.length === 0 ? (
-          <div className="col-span-2 text-center py-12 text-gray-500">
+          <div className="col-span-2 text-center py-12 text-muted-foreground">
             <p>Ingen oppskrifter funnet</p>
           </div>
         ) : (
           displayedRecipes.map((recipe) => (
-          <article
-            key={recipe.id}
-            className="bg-white shadow-md border-b-4 border-[#B4EDCE] p-8 hover:shadow-lg transition-all"
-          >
+          <article key={recipe.id}>
+            <Card className="border-b-4 border-chart-5 hover:shadow-lg transition-all">
+              <CardContent className="pt-6">
             <div className="flex justify-between items-start mb-4">
               <div className="flex-1">
                 <div className="flex items-center gap-2 mb-3">
-                  <ChefHat className="w-6 h-6 text-[#F28B1D]" />
-                  <h3 className="text-2xl font-semibold text-gray-900">{recipe.title}</h3>
+                  <ChefHat className="w-6 h-6 text-primary" />
+                  <Heading level="h3">{recipe.title}</Heading>
                 </div>
-                <div className="flex flex-wrap gap-4 text-sm text-gray-600 mb-4 uppercase tracking-wide">
+                <div className="flex flex-wrap gap-4 text-sm text-muted-foreground mb-4 uppercase tracking-wide">
                   <span className="flex items-center gap-1.5">
                     <Clock className="w-4 h-4" />
                     {recipe.cookTime}
@@ -318,14 +316,14 @@ Smør til steking`,
               <div className="flex gap-2">
                 <button
                   onClick={() => handleEdit(recipe)}
-                  className="p-2 text-gray-600 hover:bg-gray-100 transition-all"
+                  className="p-2 text-muted-foreground hover:bg-muted transition-all"
                   title="Rediger oppskrift"
                 >
                   <Edit2 className="w-5 h-5" />
                 </button>
                 <button
                   onClick={() => handleDelete(recipe.id)}
-                  className="p-2 text-gray-600 hover:bg-gray-100 transition-all"
+                  className="p-2 text-muted-foreground hover:bg-muted transition-all"
                   title="Slett oppskrift"
                 >
                   <Trash2 className="w-5 h-5" />
@@ -334,25 +332,27 @@ Smør til steking`,
             </div>
 
             {recipe.story && (
-              <div className="bg-[#B4EDCE]/20 p-4 mb-4 border-l-4 border-[#B4EDCE]">
-                <p className="text-sm text-gray-700 italic">{recipe.story}</p>
+              <div className="bg-chart-5/20 p-4 mb-4 border-l-4 border-chart-5">
+                <p className="text-sm text-card-foreground italic">{recipe.story}</p>
               </div>
             )}
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <h4 className="font-semibold text-gray-900 mb-2 uppercase tracking-wide text-sm">Ingredienser:</h4>
-                <div className="text-sm text-gray-700 whitespace-pre-line bg-gray-50 p-3 border-l-2 border-gray-200">
+                <h4 className="font-semibold text-foreground mb-2 uppercase tracking-wide text-sm">Ingredienser:</h4>
+                <div className="text-sm text-card-foreground whitespace-pre-line bg-muted p-3 border-l-2 border">
                   {recipe.ingredients}
                 </div>
               </div>
               <div>
-                <h4 className="font-semibold text-gray-900 mb-2 uppercase tracking-wide text-sm">Fremgangsmåte:</h4>
-                <div className="text-sm text-gray-700 whitespace-pre-line bg-gray-50 p-3 border-l-2 border-gray-200">
+                <h4 className="font-semibold text-foreground mb-2 uppercase tracking-wide text-sm">Fremgangsmåte:</h4>
+                <div className="text-sm text-card-foreground whitespace-pre-line bg-muted p-3 border-l-2 border">
                   {recipe.instructions}
                 </div>
               </div>
             </div>
+            </CardContent>
+          </Card>
           </article>
           ))
         )}
@@ -361,6 +361,6 @@ Smør til steking`,
   );
 }
 
-export const Route = createFileRoute('/recipes')({
+export const Route = createFileRoute('/oppskrifter')({
   component: Recipes,
 })

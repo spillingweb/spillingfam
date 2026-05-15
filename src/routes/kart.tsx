@@ -1,6 +1,9 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { useState } from 'react'
 import { Home, Warehouse, Tractor, TreePine, Wheat, MapPin } from 'lucide-react'
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
+import { PageHeader } from '@/components/ui/page-header'
+import { Heading } from '@/components/ui/heading'
 
 interface Building {
   id: string
@@ -66,25 +69,22 @@ function Map() {
 
   return (
     <div className="space-y-8">
-      {/* Page Header */}
-      <div className="mb-10">
-        <h2 className="text-4xl font-serif text-gray-900 mb-3">Gårdskart</h2>
-        <p className="text-lg text-gray-600">
-          Utforsk bygningene og landemerkene som forteller vår historie
-        </p>
-      </div>
+      <PageHeader
+        title="Gårdskart"
+        description="Utforsk bygningene og landemerkene som forteller vår historie"
+      />
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Map Area */}
         <div className="lg:col-span-2">
-          <div className="bg-[#B4EDCE]/30 shadow-md border-2 border-gray-200 p-8 relative h-[600px] overflow-hidden">
+          <div className="bg-muted/30 shadow-md border-2 border-border p-8 relative h-150 overflow-hidden">
             {/* Decorative elements */}
-            <div className="absolute top-4 right-4 text-gray-300">
+            <div className="absolute top-4 right-4 text-muted-foreground/30">
               <MapPin className="w-10 h-10" />
             </div>
 
             {/* Road */}
-            <div className="absolute bottom-0 left-0 right-0 h-12 bg-gray-400 opacity-20"></div>
+            <div className="absolute bottom-0 left-0 right-0 h-12 bg-muted-foreground opacity-20"></div>
 
             {/* Buildings */}
             {buildings.map((building) => {
@@ -109,15 +109,15 @@ function Map() {
                     <div
                       className={`p-4 shadow-lg transition-all ${
                         isSelected
-                          ? 'bg-[#F28B1D] text-white ring-4 ring-[#F28B1D]/30'
-                          : 'bg-white text-gray-700 hover:bg-gray-50 border-2 border-gray-200'
+                          ? 'bg-primary text-primary-foreground ring-4 ring-primary/30'
+                          : 'bg-card text-card-foreground hover:bg-muted border-2 border-border'
                       }`}
                     >
                       <Icon className="w-7 h-7" />
                     </div>
                     <div
                       className={`absolute -bottom-8 left-1/2 -translate-x-1/2 whitespace-nowrap text-sm font-medium uppercase tracking-wide ${
-                        isSelected ? 'text-gray-900' : 'text-gray-700'
+                        isSelected ? 'text-foreground' : 'text-card-foreground'
                       }`}
                     >
                       {building.name}
@@ -128,11 +128,11 @@ function Map() {
             })}
 
             {/* Legend */}
-            <div className="absolute bottom-16 left-4 bg-white/90 backdrop-blur-sm p-4 shadow-sm border-2 border-gray-200">
-              <p className="text-sm text-gray-900 font-medium mb-1 uppercase tracking-wide">
+            <div className="absolute bottom-16 left-4 bg-card/90 backdrop-blur-sm p-4 shadow-sm border-2 border-border">
+              <p className="text-sm text-foreground font-medium mb-1 uppercase tracking-wide">
                 Klikk på markører
               </p>
-              <p className="text-xs text-gray-600">Est. 1920-tallet - i dag</p>
+              <p className="text-xs text-muted-foreground">Est. 1920-tallet - i dag</p>
             </div>
           </div>
         </div>
@@ -140,38 +140,40 @@ function Map() {
         {/* Info Panel */}
         <div className="lg:col-span-1">
           {selectedBuilding ? (
-            <div className="bg-white shadow-md border-l-8 border-[#F28B1D] p-8 sticky top-24">
-              <div>
+            <Card className="border-l-8 border-primary sticky top-24">
+              <CardContent className="pt-6">
                 <div className="flex items-start gap-3 mb-4">
                   {(() => {
                     const Icon = selectedBuilding.icon
                     return (
-                      <div className="w-14 h-14 bg-[#F28B1D] flex items-center justify-center shadow-md flex-shrink-0">
-                        <Icon className="w-7 h-7 text-white" />
+                      <div className="w-14 h-14 bg-primary flex items-center justify-center shadow-md shrink-0">
+                        <Icon className="w-7 h-7 text-primary-foreground" />
                       </div>
                     )
                   })()}
                   <div>
-                    <h3 className="text-2xl font-semibold text-gray-900">
+                    <Heading level="h3">
                       {selectedBuilding.name}
-                    </h3>
-                    <p className="text-sm text-gray-600 mt-1 uppercase tracking-wide">
+                    </Heading>
+                    <p className="text-sm text-muted-foreground mt-1 uppercase tracking-wide">
                       Bygget: {selectedBuilding.year}
                     </p>
                   </div>
                 </div>
-                <p className="text-gray-700 leading-relaxed">
+                <p className="text-card-foreground leading-relaxed">
                   {selectedBuilding.description}
                 </p>
-              </div>
-            </div>
+              </CardContent>
+            </Card>
           ) : (
-            <div className="bg-white shadow-md border-2 border-gray-200 p-8 sticky top-24">
-              <div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-3 uppercase tracking-wide">
+            <Card className="sticky top-24">
+              <CardHeader>
+                <CardTitle className="uppercase tracking-wide">
                   Velkommen til gården
-                </h3>
-                <p className="text-gray-700 mb-6">
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-card-foreground mb-6">
                   Klikk på en bygning eller landemerke på kartet for å lære om
                   dens historie og betydning for familien vår.
                 </p>
@@ -182,16 +184,16 @@ function Map() {
                       <button
                         key={building.id}
                         onClick={() => setSelectedBuilding(building)}
-                        className="w-full flex items-center gap-3 p-3 hover:bg-gray-50 transition-all text-left border-l-4 border-transparent hover:border-[#F28B1D]"
+                        className="w-full flex items-center gap-3 p-3 hover:bg-muted transition-all text-left border-l-4 border-transparent hover:border-primary"
                       >
-                        <div className="w-10 h-10 bg-[#F28B1D] flex items-center justify-center flex-shrink-0">
-                          <Icon className="w-5 h-5 text-white" />
+                        <div className="w-10 h-10 bg-primary flex items-center justify-center shrink-0">
+                          <Icon className="w-5 h-5 text-primary-foreground" />
                         </div>
                         <div>
-                          <div className="font-medium text-gray-900">
+                          <div className="font-medium text-foreground">
                             {building.name}
                           </div>
-                          <div className="text-sm text-gray-600 uppercase tracking-wide">
+                          <div className="text-sm text-muted-foreground uppercase tracking-wide">
                             {building.year}
                           </div>
                         </div>
@@ -199,8 +201,8 @@ function Map() {
                     )
                   })}
                 </div>
-              </div>
-            </div>
+              </CardContent>
+            </Card>
           )}
         </div>
       </div>
@@ -208,6 +210,6 @@ function Map() {
   )
 }
 
-export const Route = createFileRoute('/map')({
+export const Route = createFileRoute('/kart')({
   component: Map,
 })

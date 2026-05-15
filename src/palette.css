@@ -1,0 +1,68 @@
+/* CSS HEX */
+--rusty-spice: #A34D29ff;
+--toffee-brown: #925F3Aff;
+--palm-leaf: #8E8F6Cff;
+--charcoal-blue: #2F5160ff;
+--pine-teal: #354F42ff;
+
+/* Tailwind version */
+--color-rusty-spice-50: oklch(95.96% 0.013 41.20);
+--color-rusty-spice-100: oklch(91.91% 0.027 43.65);
+--color-rusty-spice-200: oklch(84.05% 0.056 45.12);
+--color-rusty-spice-300: oklch(76.06% 0.085 43.80);
+--color-rusty-spice-400: oklch(68.61% 0.117 43.92);
+--color-rusty-spice-500: oklch(61.51% 0.149 42.34);
+--color-rusty-spice-600: oklch(52.39% 0.123 42.70);
+--color-rusty-spice-700: oklch(42.69% 0.098 42.38);
+--color-rusty-spice-800: oklch(32.75% 0.071 43.43);
+--color-rusty-spice-900: oklch(21.63% 0.040 42.58);
+--color-rusty-spice-950: oklch(18.34% 0.029 46.38);
+
+--color-toffee-brown-50: oklch(96.25% 0.009 52.10);
+--color-toffee-brown-100: oklch(92.59% 0.018 59.47);
+--color-toffee-brown-200: oklch(84.98% 0.038 56.86);
+--color-toffee-brown-300: oklch(77.46% 0.058 57.13);
+--color-toffee-brown-400: oklch(70.02% 0.080 56.95);
+--color-toffee-brown-500: oklch(62.37% 0.101 54.84);
+--color-toffee-brown-600: oklch(53.28% 0.084 55.73);
+--color-toffee-brown-700: oklch(43.47% 0.066 55.42);
+--color-toffee-brown-800: oklch(33.19% 0.048 54.96);
+--color-toffee-brown-900: oklch(22.16% 0.025 57.85);
+--color-toffee-brown-950: oklch(18.72% 0.020 58.99);
+
+--color-palm-leaf-50: oklch(96.60% 0.005 106.50);
+--color-palm-leaf-100: oklch(93.21% 0.009 106.58);
+--color-palm-leaf-200: oklch(86.30% 0.019 106.79);
+--color-palm-leaf-300: oklch(79.18% 0.029 109.26);
+--color-palm-leaf-400: oklch(71.99% 0.039 109.02);
+--color-palm-leaf-500: oklch(64.65% 0.050 109.07);
+--color-palm-leaf-600: oklch(55.03% 0.041 109.38);
+--color-palm-leaf-700: oklch(44.97% 0.033 109.90);
+--color-palm-leaf-800: oklch(34.40% 0.023 107.57);
+--color-palm-leaf-900: oklch(22.82% 0.013 107.39);
+--color-palm-leaf-950: oklch(18.93% 0.010 107.30);
+
+--color-charcoal-blue-50: oklch(96.35% 0.008 228.85);
+--color-charcoal-blue-100: oklch(92.65% 0.015 224.50);
+--color-charcoal-blue-200: oklch(85.21% 0.029 224.76);
+--color-charcoal-blue-300: oklch(77.67% 0.046 226.07);
+--color-charcoal-blue-400: oklch(70.12% 0.060 226.49);
+--color-charcoal-blue-500: oklch(62.55% 0.074 227.44);
+--color-charcoal-blue-600: oklch(53.28% 0.062 227.50);
+--color-charcoal-blue-700: oklch(43.58% 0.050 227.61);
+--color-charcoal-blue-800: oklch(33.32% 0.035 226.35);
+--color-charcoal-blue-900: oklch(22.19% 0.020 225.86);
+--color-charcoal-blue-950: oklch(18.51% 0.015 230.14);
+
+--color-pine-teal-50: oklch(96.55% 0.007 160.08);
+--color-pine-teal-100: oklch(93.04% 0.013 167.16);
+--color-pine-teal-200: oklch(85.82% 0.025 164.34);
+--color-pine-teal-300: oklch(78.68% 0.040 164.57);
+--color-pine-teal-400: oklch(71.25% 0.052 163.05);
+--color-pine-teal-500: oklch(63.94% 0.067 162.48);
+--color-pine-teal-600: oklch(54.36% 0.055 162.12);
+--color-pine-teal-700: oklch(44.57% 0.044 162.97);
+--color-pine-teal-800: oklch(33.95% 0.031 162.45);
+--color-pine-teal-900: oklch(22.68% 0.018 165.08);
+--color-pine-teal-950: oklch(18.73% 0.012 167.01);
+

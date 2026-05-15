@@ -1,8 +1,12 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { useState } from 'react'
-import { Plus, Edit2, Trash2, Calendar, Search } from 'lucide-react'
+import { Plus, Edit2, Trash2, Calendar } from 'lucide-react'
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
+import { PageHeader } from '@/components/ui/page-header'
+import { SearchInput } from '@/components/ui/search-input'
+import { Heading } from '@/components/ui/heading'
 
-export const Route = createFileRoute('/stories')({ component: Stories })
+export const Route = createFileRoute('/historie')({ component: Stories })
 
 interface Story {
   id: string
@@ -131,41 +135,34 @@ function Stories() {
 
   return (
     <div className="space-y-8">
-      {/* Page Header */}
-      <div className="mb-10 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
-        <div>
-          <h2 className="text-4xl font-serif text-gray-900 mb-3">Familiehistorier</h2>
-          <p className="text-lg text-gray-600">Del og bevar minnene som formet gården vår</p>
-        </div>
-        <button
-          onClick={() => {
-            setShowForm(!showForm)
-            setEditingId(null)
-            setFormData({ title: '', author: '', year: '', content: '' })
-          }}
-          className="flex items-center gap-2 bg-[#F28B1D] text-white px-8 py-3 hover:bg-[#D45E4C] transition-all font-medium uppercase tracking-wide whitespace-nowrap self-start lg:self-auto"
-        >
-          <Plus className="w-5 h-5" />
-          Legg til ny historie
-        </button>
-      </div>
+      <PageHeader
+        title="Familiehistorier"
+        description="Del og bevar minnene som formet gården vår"
+        action={
+          <button
+            onClick={() => {
+              setShowForm(!showForm)
+              setEditingId(null)
+              setFormData({ title: '', author: '', year: '', content: '' })
+            }}
+            className="flex items-center gap-2 bg-primary text-primary-foreground px-8 py-3 hover:bg-primary/90 transition-all font-medium uppercase tracking-wide whitespace-nowrap"
+          >
+            <Plus className="w-5 h-5" />
+            Legg til ny historie
+          </button>
+        }
+      />
 
-      {/* Search Bar */}
-      <div className="relative max-w-md">
-        <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-        <input
-          type="text"
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          placeholder="Søk i historier..."
-          className="w-full pl-12 pr-4 py-3 border-2 border-gray-300 focus:ring-0 focus:border-[#F28B1D] transition-all"
-        />
-      </div>
+      <SearchInput
+        value={searchQuery}
+        onChange={setSearchQuery}
+        placeholder="Søk i historier..."
+      />
 
       {/* Interactive Timeline */}
       <div className="relative px-8">
         {/* Timeline bar */}
-        <div className="absolute left-8 right-8 top-1/2 h-1 bg-gray-400"></div>
+        <div className="absolute left-8 right-8 top-1/2 h-1 bg-muted"></div>
 
         {/* Timeline events */}
         <div className="relative flex justify-between items-center py-8">
@@ -186,24 +183,24 @@ function Stories() {
               >
                 {/* Event dot */}
                 <div
-                  className={`w-6 h-6 border-4 border-white shadow-lg transition-all ${
+                  className={`w-6 h-6 border-4 border-card shadow-lg transition-all ${
                     isSelected
-                      ? 'bg-[#F28B1D] scale-150 z-10'
-                      : 'bg-[#B4EDCE] hover:bg-[#F28B1D] hover:scale-125'
+                      ? 'bg-primary scale-150 z-10'
+                      : 'bg-chart-5 hover:bg-primary hover:scale-125'
                   }`}
                 ></div>
 
                 {/* Year label */}
                 <div
                   className={`absolute -top-12 left-1/2 -translate-x-1/2 whitespace-nowrap font-semibold transition-all ${
-                    isSelected ? 'text-[#F28B1D] text-lg' : 'text-gray-700 text-sm group-hover:text-[#F28B1D]'
+                    isSelected ? 'text-primary text-lg' : 'text-card-foreground text-sm group-hover:text-primary'
                   }`}
                 >
                   {story.year}
                 </div>
 
                 {/* Story title on hover */}
-                <div className="absolute -bottom-16 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap bg-gray-900 text-white text-xs px-3 py-2 pointer-events-none max-w-[200px] truncate">
+                <div className="absolute -bottom-16 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap bg-foreground text-primary-foreground text-xs px-3 py-2 pointer-events-none max-w-[200px] truncate">
                   {story.title}
                 </div>
               </button>
@@ -215,7 +212,7 @@ function Stories() {
           <div className="mt-8">
             <button
               onClick={() => setSelectedYear(null)}
-              className="text-sm text-gray-600 hover:text-gray-900 uppercase tracking-wide"
+              className="text-sm text-muted-foreground hover:text-foreground uppercase tracking-wide"
             >
               ← Vis alle historier
             </button>
@@ -225,15 +222,17 @@ function Stories() {
 
       {/* Story Form */}
       {showForm && (
-        <div className="bg-white shadow-lg border-l-8 border-[#F28B1D] p-8 mb-8">
-          <div>
-            <h3 className="text-2xl font-semibold text-gray-900 mb-6 uppercase tracking-wide">
+        <Card className="border-l-8 border-primary mb-8">
+          <CardHeader>
+            <CardTitle className="uppercase tracking-wide">
               {editingId ? 'Rediger historie' : 'Ny historie'}
-            </h3>
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2 uppercase tracking-wide">
+                  <label className="block text-sm font-medium text-card-foreground mb-2 uppercase tracking-wide">
                     Tittel
                   </label>
                   <input
@@ -241,12 +240,12 @@ function Stories() {
                     required
                     value={formData.title}
                     onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                    className="w-full px-4 py-3 border-2 border-gray-300 focus:ring-0 focus:border-[#F28B1D] transition-all"
+                    className="w-full px-4 py-3 border-2 border-input focus:ring-0 focus:border-primary transition-all"
                     placeholder="Skriv inn tittel..."
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2 uppercase tracking-wide">
+                  <label className="block text-sm font-medium text-card-foreground mb-2 uppercase tracking-wide">
                     År (historisk kontekst)
                   </label>
                   <input
@@ -254,13 +253,13 @@ function Stories() {
                     required
                     value={formData.year}
                     onChange={(e) => setFormData({ ...formData, year: e.target.value })}
-                    className="w-full px-4 py-3 border-2 border-gray-300 focus:ring-0 focus:border-[#F28B1D] transition-all"
+                    className="w-full px-4 py-3 border-2 border-input focus:ring-0 focus:border-primary transition-all"
                     placeholder="F.eks. 1952"
                   />
                 </div>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2 uppercase tracking-wide">
+                <label className="block text-sm font-medium text-card-foreground mb-2 uppercase tracking-wide">
                   Forfatter
                 </label>
                 <input
@@ -268,12 +267,12 @@ function Stories() {
                   required
                   value={formData.author}
                   onChange={(e) => setFormData({ ...formData, author: e.target.value })}
-                  className="w-full px-4 py-3 border-2 border-gray-300 focus:ring-0 focus:border-[#F28B1D] transition-all"
+                  className="w-full px-4 py-3 border-2 border-input focus:ring-0 focus:border-primary transition-all"
                   placeholder="Ditt navn..."
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2 uppercase tracking-wide">
+                <label className="block text-sm font-medium text-card-foreground mb-2 uppercase tracking-wide">
                   Historie
                 </label>
                 <textarea
@@ -281,14 +280,14 @@ function Stories() {
                   value={formData.content}
                   onChange={(e) => setFormData({ ...formData, content: e.target.value })}
                   rows={8}
-                  className="w-full px-4 py-3 border-2 border-gray-300 focus:ring-0 focus:border-[#F28B1D] transition-all resize-none"
+                  className="w-full px-4 py-3 border-2 border-input focus:ring-0 focus:border-primary transition-all resize-none"
                   placeholder="Del din historie..."
                 />
               </div>
               <div className="flex gap-3">
                 <button
                   type="submit"
-                  className="bg-[#F28B1D] text-white px-8 py-3 hover:bg-[#D45E4C] transition-all font-medium uppercase tracking-wide"
+                  className="bg-primary text-primary-foreground px-8 py-3 hover:bg-primary/90 transition-all font-medium uppercase tracking-wide"
                 >
                   {editingId ? 'Oppdater' : 'Publiser'}
                 </button>
@@ -299,37 +298,36 @@ function Stories() {
                     setEditingId(null)
                     setFormData({ title: '', author: '', year: '', content: '' })
                   }}
-                  className="bg-gray-200 text-gray-700 px-8 py-3 hover:bg-gray-300 transition-all font-medium uppercase tracking-wide"
+                  className="bg-secondary text-secondary-foreground px-8 py-3 hover:bg-secondary/90 transition-all font-medium uppercase tracking-wide"
                 >
                   Avbryt
                 </button>
               </div>
             </form>
-          </div>
-        </div>
+          </CardContent>
+        </Card>
       )}
 
       {/* Stories List */}
       <div className="space-y-6">
         {displayedStories.length === 0 ? (
-          <div className="text-center py-12 text-gray-500">
+          <div className="text-center py-12 text-muted-foreground">
             <p>Ingen historier funnet for {selectedYear}</p>
           </div>
         ) : (
           displayedStories.map((story) => (
-            <article
-              key={story.id}
-              className="bg-white shadow-md border-l-4 border-[#B4EDCE] p-8 hover:shadow-lg transition-all"
-            >
-              <div className="flex justify-between items-start mb-4">
+            <article key={story.id}>
+              <Card className="border-l-4 border-chart-5 hover:shadow-lg transition-all">
+                <CardContent className="pt-6">
+                <div className="flex justify-between items-start mb-4">
                 <div className="flex-1">
                   <div className="flex items-center gap-3 mb-2">
-                    <span className="inline-block bg-[#F28B1D] text-white px-3 py-1 text-sm font-semibold uppercase tracking-wide">
+                    <span className="inline-block bg-primary text-primary-foreground px-3 py-1 text-sm font-semibold uppercase tracking-wide">
                       {story.year}
                     </span>
-                    <h3 className="text-2xl font-semibold text-gray-900">{story.title}</h3>
+                    <Heading level="h3">{story.title}</Heading>
                   </div>
-                  <div className="flex items-center gap-4 text-sm text-gray-600 uppercase tracking-wide">
+                  <div className="flex items-center gap-4 text-sm text-muted-foreground uppercase tracking-wide">
                     <span className="flex items-center gap-1.5">
                       <Calendar className="w-4 h-4" />
                       Publisert{' '}
@@ -345,21 +343,23 @@ function Stories() {
                 <div className="flex gap-2">
                   <button
                     onClick={() => handleEdit(story)}
-                    className="p-2 text-gray-600 hover:bg-gray-100 transition-all"
+                    className="p-2 text-muted-foreground hover:bg-muted transition-all"
                     title="Rediger historie"
                   >
                     <Edit2 className="w-5 h-5" />
                   </button>
                   <button
                     onClick={() => handleDelete(story.id)}
-                    className="p-2 text-gray-600 hover:bg-gray-100 transition-all"
+                    className="p-2 text-muted-foreground hover:bg-muted transition-all"
                     title="Slett historie"
                   >
                     <Trash2 className="w-5 h-5" />
                   </button>
                 </div>
               </div>
-              <p className="text-gray-700 leading-relaxed whitespace-pre-wrap">{story.content}</p>
+              <p className="text-card-foreground leading-relaxed whitespace-pre-wrap">{story.content}</p>
+              </CardContent>
+            </Card>
             </article>
           ))
         )}

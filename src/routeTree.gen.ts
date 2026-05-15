@@ -9,22 +9,18 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as StoriesRouteImport } from './routes/stories'
-import { Route as RecipesRouteImport } from './routes/recipes'
+import { Route as SlektstreRouteImport } from './routes/slektstre'
 import { Route as ProfileRouteImport } from './routes/profile'
-import { Route as MapRouteImport } from './routes/map'
-import { Route as FamilyTreeRouteImport } from './routes/family-tree'
-import { Route as ArchiveRouteImport } from './routes/archive'
+import { Route as ProfilRouteImport } from './routes/profil'
+import { Route as OppskrifterRouteImport } from './routes/oppskrifter'
+import { Route as KartRouteImport } from './routes/kart'
+import { Route as HistorieRouteImport } from './routes/historie'
+import { Route as ArkivRouteImport } from './routes/arkiv'
 import { Route as IndexRouteImport } from './routes/index'
 
-const StoriesRoute = StoriesRouteImport.update({
-  id: '/stories',
-  path: '/stories',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const RecipesRoute = RecipesRouteImport.update({
-  id: '/recipes',
-  path: '/recipes',
+const SlektstreRoute = SlektstreRouteImport.update({
+  id: '/slektstre',
+  path: '/slektstre',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProfileRoute = ProfileRouteImport.update({
@@ -32,19 +28,29 @@ const ProfileRoute = ProfileRouteImport.update({
   path: '/profile',
   getParentRoute: () => rootRouteImport,
 } as any)
-const MapRoute = MapRouteImport.update({
-  id: '/map',
-  path: '/map',
+const ProfilRoute = ProfilRouteImport.update({
+  id: '/profil',
+  path: '/profil',
   getParentRoute: () => rootRouteImport,
 } as any)
-const FamilyTreeRoute = FamilyTreeRouteImport.update({
-  id: '/family-tree',
-  path: '/family-tree',
+const OppskrifterRoute = OppskrifterRouteImport.update({
+  id: '/oppskrifter',
+  path: '/oppskrifter',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ArchiveRoute = ArchiveRouteImport.update({
-  id: '/archive',
-  path: '/archive',
+const KartRoute = KartRouteImport.update({
+  id: '/kart',
+  path: '/kart',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HistorieRoute = HistorieRouteImport.update({
+  id: '/historie',
+  path: '/historie',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ArkivRoute = ArkivRouteImport.update({
+  id: '/arkiv',
+  path: '/arkiv',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -55,86 +61,86 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/archive': typeof ArchiveRoute
-  '/family-tree': typeof FamilyTreeRoute
-  '/map': typeof MapRoute
+  '/arkiv': typeof ArkivRoute
+  '/historie': typeof HistorieRoute
+  '/kart': typeof KartRoute
+  '/oppskrifter': typeof OppskrifterRoute
+  '/profil': typeof ProfilRoute
   '/profile': typeof ProfileRoute
-  '/recipes': typeof RecipesRoute
-  '/stories': typeof StoriesRoute
+  '/slektstre': typeof SlektstreRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/archive': typeof ArchiveRoute
-  '/family-tree': typeof FamilyTreeRoute
-  '/map': typeof MapRoute
+  '/arkiv': typeof ArkivRoute
+  '/historie': typeof HistorieRoute
+  '/kart': typeof KartRoute
+  '/oppskrifter': typeof OppskrifterRoute
+  '/profil': typeof ProfilRoute
   '/profile': typeof ProfileRoute
-  '/recipes': typeof RecipesRoute
-  '/stories': typeof StoriesRoute
+  '/slektstre': typeof SlektstreRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/archive': typeof ArchiveRoute
-  '/family-tree': typeof FamilyTreeRoute
-  '/map': typeof MapRoute
+  '/arkiv': typeof ArkivRoute
+  '/historie': typeof HistorieRoute
+  '/kart': typeof KartRoute
+  '/oppskrifter': typeof OppskrifterRoute
+  '/profil': typeof ProfilRoute
   '/profile': typeof ProfileRoute
-  '/recipes': typeof RecipesRoute
-  '/stories': typeof StoriesRoute
+  '/slektstre': typeof SlektstreRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/archive'
-    | '/family-tree'
-    | '/map'
+    | '/arkiv'
+    | '/historie'
+    | '/kart'
+    | '/oppskrifter'
+    | '/profil'
     | '/profile'
-    | '/recipes'
-    | '/stories'
+    | '/slektstre'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/archive'
-    | '/family-tree'
-    | '/map'
+    | '/arkiv'
+    | '/historie'
+    | '/kart'
+    | '/oppskrifter'
+    | '/profil'
     | '/profile'
-    | '/recipes'
-    | '/stories'
+    | '/slektstre'
   id:
     | '__root__'
     | '/'
-    | '/archive'
-    | '/family-tree'
-    | '/map'
+    | '/arkiv'
+    | '/historie'
+    | '/kart'
+    | '/oppskrifter'
+    | '/profil'
     | '/profile'
-    | '/recipes'
-    | '/stories'
+    | '/slektstre'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  ArchiveRoute: typeof ArchiveRoute
-  FamilyTreeRoute: typeof FamilyTreeRoute
-  MapRoute: typeof MapRoute
+  ArkivRoute: typeof ArkivRoute
+  HistorieRoute: typeof HistorieRoute
+  KartRoute: typeof KartRoute
+  OppskrifterRoute: typeof OppskrifterRoute
+  ProfilRoute: typeof ProfilRoute
   ProfileRoute: typeof ProfileRoute
-  RecipesRoute: typeof RecipesRoute
-  StoriesRoute: typeof StoriesRoute
+  SlektstreRoute: typeof SlektstreRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/stories': {
-      id: '/stories'
-      path: '/stories'
-      fullPath: '/stories'
-      preLoaderRoute: typeof StoriesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/recipes': {
-      id: '/recipes'
-      path: '/recipes'
-      fullPath: '/recipes'
-      preLoaderRoute: typeof RecipesRouteImport
+    '/slektstre': {
+      id: '/slektstre'
+      path: '/slektstre'
+      fullPath: '/slektstre'
+      preLoaderRoute: typeof SlektstreRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/profile': {
@@ -144,25 +150,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProfileRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/map': {
-      id: '/map'
-      path: '/map'
-      fullPath: '/map'
-      preLoaderRoute: typeof MapRouteImport
+    '/profil': {
+      id: '/profil'
+      path: '/profil'
+      fullPath: '/profil'
+      preLoaderRoute: typeof ProfilRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/family-tree': {
-      id: '/family-tree'
-      path: '/family-tree'
-      fullPath: '/family-tree'
-      preLoaderRoute: typeof FamilyTreeRouteImport
+    '/oppskrifter': {
+      id: '/oppskrifter'
+      path: '/oppskrifter'
+      fullPath: '/oppskrifter'
+      preLoaderRoute: typeof OppskrifterRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/archive': {
-      id: '/archive'
-      path: '/archive'
-      fullPath: '/archive'
-      preLoaderRoute: typeof ArchiveRouteImport
+    '/kart': {
+      id: '/kart'
+      path: '/kart'
+      fullPath: '/kart'
+      preLoaderRoute: typeof KartRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/historie': {
+      id: '/historie'
+      path: '/historie'
+      fullPath: '/historie'
+      preLoaderRoute: typeof HistorieRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/arkiv': {
+      id: '/arkiv'
+      path: '/arkiv'
+      fullPath: '/arkiv'
+      preLoaderRoute: typeof ArkivRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -177,12 +197,13 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  ArchiveRoute: ArchiveRoute,
-  FamilyTreeRoute: FamilyTreeRoute,
-  MapRoute: MapRoute,
+  ArkivRoute: ArkivRoute,
+  HistorieRoute: HistorieRoute,
+  KartRoute: KartRoute,
+  OppskrifterRoute: OppskrifterRoute,
+  ProfilRoute: ProfilRoute,
   ProfileRoute: ProfileRoute,
-  RecipesRoute: RecipesRoute,
-  StoriesRoute: StoriesRoute,
+  SlektstreRoute: SlektstreRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

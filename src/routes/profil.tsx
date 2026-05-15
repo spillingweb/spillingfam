@@ -1,46 +1,64 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { useState } from "react";
-import { User, Mail, Phone, MapPin, Calendar, Camera, Bell, Lock, Save, Users } from "lucide-react";
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "#/components/ui/card.tsx";
+import { useState } from 'react'
+import {
+  User,
+  Mail,
+  Phone,
+  MapPin,
+  Calendar,
+  Camera,
+  Bell,
+  Lock,
+  Save,
+  Users,
+} from 'lucide-react'
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+} from '#/components/ui/card.tsx'
+import { PageHeader } from '@/components/ui/page-header'
+import { Heading } from '@/components/ui/heading'
 
 function Profile() {
   const [formData, setFormData] = useState({
-    name: "Kari Johnsen",
-    email: "kari.johnsen@example.com",
-    phone: "+47 123 45 678",
-    location: "Østfold, Norge",
-    birthDate: "1985-06-15",
-  });
+    name: 'Kari Johnsen',
+    email: 'kari.johnsen@example.com',
+    phone: '+47 123 45 678',
+    location: 'Østfold, Norge',
+    birthDate: '1985-06-15',
+  })
 
   const [treePosition, setTreePosition] = useState({
-    generation: "3",
-    parentName: "Per Johansen",
-    relationship: "daughter",
-  });
+    generation: '3',
+    parentName: 'Per Johansen',
+    relationship: 'daughter',
+  })
 
   const [notifications, setNotifications] = useState({
     newStories: true,
     familyUpdates: true,
     comments: false,
-  });
+  })
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    alert("Profil oppdatert!");
-  };
+    e.preventDefault()
+    alert('Profil oppdatert!')
+  }
 
   const handleTreeSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    alert("Plassering i slektstre oppdatert!");
-  };
+    e.preventDefault()
+    alert('Plassering i slektstre oppdatert!')
+  }
 
   return (
     <div className="max-w-5xl mx-auto space-y-8">
-      {/* Page Header */}
-      <div className="mb-10">
-        <h2 className="text-4xl font-serif text-foreground mb-3">Min profil</h2>
-        <p className="text-lg text-muted-foreground">Administrer din informasjon og innstillinger</p>
-      </div>
+      <PageHeader
+        title="Min profil"
+        description="Administrer din informasjon og innstillinger"
+      />
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Profile Card */}
@@ -57,10 +75,12 @@ function Profile() {
                 </button>
               </div>
 
-              <h3 className="text-2xl font-semibold text-foreground text-center mb-2">
+              <Heading level="h3" className="text-center mb-2">
                 {formData.name}
-              </h3>
-              <p className="text-muted-foreground text-center uppercase tracking-wide text-sm">{formData.email}</p>
+              </Heading>
+              <p className="text-muted-foreground text-center uppercase tracking-wide text-sm">
+                {formData.email}
+              </p>
             </CardContent>
           </Card>
         </div>
@@ -70,12 +90,7 @@ function Profile() {
           {/* Personal Information */}
           <Card className="border-l-8 border-chart-5">
             <CardHeader>
-              <div className="flex items-center gap-3">
-                <div className="w-12 h-12 bg-chart-5 flex items-center justify-center">
-                  <User className="w-6 h-6 text-foreground" />
-                </div>
-                <CardTitle>Personlig informasjon</CardTitle>
-              </div>
+              <CardTitle>Personlig informasjon</CardTitle>
             </CardHeader>
 
             <CardContent>
@@ -90,7 +105,9 @@ function Profile() {
                       <input
                         type="text"
                         value={formData.name}
-                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                        onChange={(e) =>
+                          setFormData({ ...formData, name: e.target.value })
+                        }
                         className="w-full pl-12 pr-4 py-3 border-2 border-input focus:ring-0 focus:border-primary transition-all"
                       />
                     </div>
@@ -105,7 +122,9 @@ function Profile() {
                       <input
                         type="email"
                         value={formData.email}
-                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                        onChange={(e) =>
+                          setFormData({ ...formData, email: e.target.value })
+                        }
                         className="w-full pl-12 pr-4 py-3 border-2 border-input focus:ring-0 focus:border-primary transition-all"
                       />
                     </div>
@@ -120,7 +139,9 @@ function Profile() {
                       <input
                         type="tel"
                         value={formData.phone}
-                        onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                        onChange={(e) =>
+                          setFormData({ ...formData, phone: e.target.value })
+                        }
                         className="w-full pl-12 pr-4 py-3 border-2 border-input focus:ring-0 focus:border-primary transition-all"
                       />
                     </div>
@@ -135,7 +156,9 @@ function Profile() {
                       <input
                         type="text"
                         value={formData.location}
-                        onChange={(e) => setFormData({ ...formData, location: e.target.value })}
+                        onChange={(e) =>
+                          setFormData({ ...formData, location: e.target.value })
+                        }
                         className="w-full pl-12 pr-4 py-3 border-2 border-input focus:ring-0 focus:border-primary transition-all"
                       />
                     </div>
@@ -150,7 +173,12 @@ function Profile() {
                       <input
                         type="date"
                         value={formData.birthDate}
-                        onChange={(e) => setFormData({ ...formData, birthDate: e.target.value })}
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            birthDate: e.target.value,
+                          })
+                        }
                         className="w-full pl-12 pr-4 py-3 border-2 border-input focus:ring-0 focus:border-primary transition-all"
                       />
                     </div>
@@ -171,14 +199,10 @@ function Profile() {
           {/* Family Tree Placement */}
           <Card className="border-l-8 border-chart-4">
             <CardHeader>
-              <div className="flex items-center gap-3">
-                <div className="w-12 h-12 bg-chart-4 flex items-center justify-center">
-                  <Users className="w-6 h-6 text-foreground" />
-                </div>
-                <CardTitle>Plassering i slektstreet</CardTitle>
-              </div>
+              <CardTitle>Plassering i slektstreet</CardTitle>
               <CardDescription>
-                Definer din plass i familietreet slik at andre kan se ditt forhold til resten av slekten.
+                Definer din plass i familietreet slik at andre kan se ditt
+                forhold til resten av slekten.
               </CardDescription>
             </CardHeader>
 
@@ -190,7 +214,12 @@ function Profile() {
                   </label>
                   <select
                     value={treePosition.generation}
-                    onChange={(e) => setTreePosition({ ...treePosition, generation: e.target.value })}
+                    onChange={(e) =>
+                      setTreePosition({
+                        ...treePosition,
+                        generation: e.target.value,
+                      })
+                    }
                     className="w-full px-4 py-3 border-2 border-input focus:ring-0 focus:border-primary transition-all"
                   >
                     <option value="1">Generasjon 1 - Oldeforeldre</option>
@@ -206,7 +235,12 @@ function Profile() {
                   </label>
                   <select
                     value={treePosition.relationship}
-                    onChange={(e) => setTreePosition({ ...treePosition, relationship: e.target.value })}
+                    onChange={(e) =>
+                      setTreePosition({
+                        ...treePosition,
+                        relationship: e.target.value,
+                      })
+                    }
                     className="w-full px-4 py-3 border-2 border-input focus:ring-0 focus:border-primary transition-all"
                   >
                     <option value="son">Sønn av</option>
@@ -222,7 +256,12 @@ function Profile() {
                   </label>
                   <select
                     value={treePosition.parentName}
-                    onChange={(e) => setTreePosition({ ...treePosition, parentName: e.target.value })}
+                    onChange={(e) =>
+                      setTreePosition({
+                        ...treePosition,
+                        parentName: e.target.value,
+                      })
+                    }
                     className="w-full px-4 py-3 border-2 border-input focus:ring-0 focus:border-primary transition-all"
                   >
                     <option value="Johan Olsen">Johan Olsen</option>
@@ -238,12 +277,18 @@ function Profile() {
 
                 <div className="bg-chart-4/20 p-4 border-l-4 border-chart-4">
                   <p className="text-sm text-card-foreground">
-                    <strong>Eksempel:</strong> Du er {" "}
+                    <strong>Eksempel:</strong> Du er{' '}
                     <span className="font-semibold text-foreground">
-                      {treePosition.relationship === "son" ? "sønn" :
-                       treePosition.relationship === "daughter" ? "datter" :
-                       treePosition.relationship === "spouse" ? "ektefelle" : "søsken"} av {treePosition.parentName}
-                    </span> i generasjon {treePosition.generation}.
+                      {treePosition.relationship === 'son'
+                        ? 'sønn'
+                        : treePosition.relationship === 'daughter'
+                          ? 'datter'
+                          : treePosition.relationship === 'spouse'
+                            ? 'ektefelle'
+                            : 'søsken'}{' '}
+                      av {treePosition.parentName}
+                    </span>{' '}
+                    i generasjon {treePosition.generation}.
                   </p>
                 </div>
 
@@ -261,51 +306,73 @@ function Profile() {
           {/* Notifications */}
           <Card className="border-l-8 border-chart-5">
             <CardHeader>
-              <div className="flex items-center gap-3">
-                <div className="w-12 h-12 bg-chart-5 flex items-center justify-center">
-                  <Bell className="w-6 h-6 text-foreground" />
-                </div>
-                <CardTitle>Varsler</CardTitle>
-              </div>
+              <CardTitle>Varsler</CardTitle>
             </CardHeader>
 
             <CardContent>
               <div className="space-y-4">
                 <label className="flex items-center justify-between p-4 bg-muted/30 cursor-pointer hover:bg-muted/50 transition-colors border-l-4 border-transparent hover:border-chart-5">
                   <div>
-                    <div className="font-medium text-foreground">Nye historier</div>
-                    <div className="text-sm text-muted-foreground">Få varsel når noen publiserer en ny historie</div>
+                    <div className="font-medium text-foreground">
+                      Nye historier
+                    </div>
+                    <div className="text-sm text-muted-foreground">
+                      Få varsel når noen publiserer en ny historie
+                    </div>
                   </div>
                   <input
                     type="checkbox"
                     checked={notifications.newStories}
-                    onChange={(e) => setNotifications({ ...notifications, newStories: e.target.checked })}
+                    onChange={(e) =>
+                      setNotifications({
+                        ...notifications,
+                        newStories: e.target.checked,
+                      })
+                    }
                     className="w-5 h-5 border-input text-primary focus:ring-primary"
                   />
                 </label>
 
                 <label className="flex items-center justify-between p-4 bg-muted/30 cursor-pointer hover:bg-muted/50 transition-colors border-l-4 border-transparent hover:border-chart-5">
                   <div>
-                    <div className="font-medium text-foreground">Familieoppdateringer</div>
-                    <div className="text-sm text-muted-foreground">Varsler om endringer i slektstreet</div>
+                    <div className="font-medium text-foreground">
+                      Familieoppdateringer
+                    </div>
+                    <div className="text-sm text-muted-foreground">
+                      Varsler om endringer i slektstreet
+                    </div>
                   </div>
                   <input
                     type="checkbox"
                     checked={notifications.familyUpdates}
-                    onChange={(e) => setNotifications({ ...notifications, familyUpdates: e.target.checked })}
+                    onChange={(e) =>
+                      setNotifications({
+                        ...notifications,
+                        familyUpdates: e.target.checked,
+                      })
+                    }
                     className="w-5 h-5 border-input text-primary focus:ring-primary"
                   />
                 </label>
 
                 <label className="flex items-center justify-between p-4 bg-muted/30 cursor-pointer hover:bg-muted/50 transition-colors border-l-4 border-transparent hover:border-chart-5">
                   <div>
-                    <div className="font-medium text-foreground">Kommentarer</div>
-                    <div className="text-sm text-muted-foreground">Få varsel når noen kommenterer på dine innlegg</div>
+                    <div className="font-medium text-foreground">
+                      Kommentarer
+                    </div>
+                    <div className="text-sm text-muted-foreground">
+                      Få varsel når noen kommenterer på dine innlegg
+                    </div>
                   </div>
                   <input
                     type="checkbox"
                     checked={notifications.comments}
-                    onChange={(e) => setNotifications({ ...notifications, comments: e.target.checked })}
+                    onChange={(e) =>
+                      setNotifications({
+                        ...notifications,
+                        comments: e.target.checked,
+                      })
+                    }
                     className="w-5 h-5 border-input text-primary focus:ring-primary"
                   />
                 </label>
@@ -316,30 +383,37 @@ function Profile() {
           {/* Security */}
           <Card className="border-l-8 border-destructive">
             <CardHeader>
-              <div className="flex items-center gap-3">
-                <div className="w-12 h-12 bg-destructive flex items-center justify-center">
-                  <Lock className="w-6 h-6 text-white" />
-                </div>
-                <CardTitle>Sikkerhet</CardTitle>
-              </div>
+              <CardTitle>Sikkerhet</CardTitle>
             </CardHeader>
 
             <CardContent>
               <div className="space-y-3">
                 <button className="w-full p-4 bg-muted/30 text-left hover:bg-muted/50 transition-colors flex items-center justify-between group border-l-4 border-transparent hover:border-destructive">
                   <div>
-                    <div className="font-medium text-foreground">Endre passord</div>
-                    <div className="text-sm text-muted-foreground">Oppdater ditt passord</div>
+                    <div className="font-medium text-foreground">
+                      Endre passord
+                    </div>
+                    <div className="text-sm text-muted-foreground">
+                      Oppdater ditt passord
+                    </div>
                   </div>
-                  <span className="text-muted-foreground group-hover:text-foreground group-hover:translate-x-1 transition-all">→</span>
+                  <span className="text-muted-foreground group-hover:text-foreground group-hover:translate-x-1 transition-all">
+                    →
+                  </span>
                 </button>
 
                 <button className="w-full p-4 bg-muted/30 text-left hover:bg-muted/50 transition-colors flex items-center justify-between group border-l-4 border-transparent hover:border-destructive">
                   <div>
-                    <div className="font-medium text-foreground">Tofaktorautentisering</div>
-                    <div className="text-sm text-muted-foreground">Legg til ekstra sikkerhet</div>
+                    <div className="font-medium text-foreground">
+                      Tofaktorautentisering
+                    </div>
+                    <div className="text-sm text-muted-foreground">
+                      Legg til ekstra sikkerhet
+                    </div>
                   </div>
-                  <span className="text-muted-foreground group-hover:text-foreground group-hover:translate-x-1 transition-all">→</span>
+                  <span className="text-muted-foreground group-hover:text-foreground group-hover:translate-x-1 transition-all">
+                    →
+                  </span>
                 </button>
               </div>
             </CardContent>
@@ -347,9 +421,9 @@ function Profile() {
         </div>
       </div>
     </div>
-  );
+  )
 }
 
-export const Route = createFileRoute('/profile')({
+export const Route = createFileRoute('/profil')({
   component: Profile,
 })

@@ -2,6 +2,8 @@ import { createFileRoute } from '@tanstack/react-router'
 import { useState, useCallback } from 'react'
 import { User, Heart } from 'lucide-react'
 import type { Node, Edge } from '@xyflow/react'
+import { PageHeader } from '@/components/ui/page-header'
+import { Heading } from '@/components/ui/heading'
 import {
   ReactFlow,
   Controls,
@@ -24,35 +26,35 @@ interface PersonData extends Record<string, unknown> {
 // Custom node component for family members
 function PersonNode({ data }: { data: PersonData }) {
   return (
-    <div className="bg-white shadow-md p-4 w-40 hover:shadow-lg transition-all border-2 border-gray-200 hover:border-[#F28B1D] rounded-lg relative">
+    <div className="bg-card shadow-md p-4 w-40 hover:shadow-lg transition-all border-2 border-border hover:border-primary rounded-lg relative">
       <Handle
         type="target"
         position={Position.Top}
         id="top"
-        className="w-3 h-3 !bg-[#F28B1D]"
+        className="w-3 h-3 !bg-primary"
       />
       <Handle
-        type="source"
+        type="target"
         position={Position.Left}
         id="left"
-        className="w-3 h-3 !bg-[#D45E4C]"
+        className="w-3 h-3 !bg-destructive"
       />
       <Handle
         type="source"
         position={Position.Right}
         id="right"
-        className="w-3 h-3 !bg-[#D45E4C]"
+        className="w-3 h-3 !bg-destructive"
       />
       <div
         className="w-12 h-12 flex items-center justify-center mb-3 mx-auto rounded-md"
         style={{ backgroundColor: data.color }}
       >
-        <User className="w-6 h-6 text-white" />
+        <User className="w-6 h-6 text-primary-foreground" />
       </div>
-      <h3 className="font-semibold text-gray-900 text-sm text-center mb-1">
+      <h3 className="font-semibold text-foreground text-sm text-center mb-1">
         {data.name}
       </h3>
-      <div className="text-xs text-gray-600 text-center uppercase tracking-wide">
+      <div className="text-xs text-muted-foreground text-center uppercase tracking-wide">
         <div>{data.birth}</div>
         {data.death && <div>- {data.death}</div>}
       </div>
@@ -60,7 +62,7 @@ function PersonNode({ data }: { data: PersonData }) {
         type="source"
         position={Position.Bottom}
         id="bottom"
-        className="w-3 h-3 !bg-[#F28B1D]"
+        className="w-3 h-3 !bg-primary"
       />
     </div>
   )
@@ -72,17 +74,17 @@ const nodeTypes = {
 
 const getPersonColor = (id: string) => {
   const colors = [
-    '#F28B1D',
-    '#B4EDCE',
-    '#B3E9F5',
-    '#D45E4C',
-    '#F28B1D',
-    '#B4EDCE',
-    '#B3E9F5',
-    '#D45E4C',
-    '#F28B1D',
-    '#B4EDCE',
-    '#B3E9F5',
+    'oklch(0.52 0.123 42.70)', // rusty-spice
+    'oklch(0.44 0.044 162.97)', // pine-teal
+    'oklch(0.36 0.062 227.50)', // charcoal-blue
+    'oklch(0.53 0.084 55.73)', // toffee-brown
+    'oklch(0.52 0.123 42.70)', // rusty-spice
+    'oklch(0.44 0.044 162.97)', // pine-teal
+    'oklch(0.36 0.062 227.50)', // charcoal-blue
+    'oklch(0.53 0.084 55.73)', // toffee-brown
+    'oklch(0.52 0.123 42.70)', // rusty-spice
+    'oklch(0.44 0.044 162.97)', // pine-teal
+    'oklch(0.36 0.062 227.50)', // charcoal-blue
   ]
   return colors[parseInt(id) - 1] || colors[0]
 }
@@ -189,7 +191,7 @@ function FamilyTree() {
       sourceHandle: 'right',
       targetHandle: 'left',
       type: 'straight',
-      style: { stroke: '#D45E4C', strokeWidth: 3, strokeDasharray: '5,5' },
+      style: { stroke: 'oklch(0.577 0.245 27.325)', strokeWidth: 3, strokeDasharray: '5,5' },
     },
     {
       id: 'e3-4',
@@ -198,7 +200,7 @@ function FamilyTree() {
       sourceHandle: 'right',
       targetHandle: 'left',
       type: 'straight',
-      style: { stroke: '#D45E4C', strokeWidth: 3, strokeDasharray: '5,5' },
+      style: { stroke: 'oklch(0.577 0.245 27.325)', strokeWidth: 3, strokeDasharray: '5,5' },
     },
     {
       id: 'e6-7',
@@ -207,7 +209,7 @@ function FamilyTree() {
       sourceHandle: 'right',
       targetHandle: 'left',
       type: 'straight',
-      style: { stroke: '#D45E4C', strokeWidth: 3, strokeDasharray: '5,5' },
+      style: { stroke: 'oklch(0.577 0.245 27.325)', strokeWidth: 3, strokeDasharray: '5,5' },
     },
 
     // Generation 1 -> 2 (parent-child relationships with step edges)
@@ -216,42 +218,42 @@ function FamilyTree() {
       source: '1',
       target: '3',
       type: 'step',
-      style: { stroke: '#F28B1D', strokeWidth: 2 },
+      style: { stroke: 'oklch(0.52 0.123 42.70)', strokeWidth: 2 },
     },
     {
       id: 'e2-3',
       source: '2',
       target: '3',
       type: 'step',
-      style: { stroke: '#F28B1D', strokeWidth: 2 },
+      style: { stroke: 'oklch(0.52 0.123 42.70)', strokeWidth: 2 },
     },
     {
       id: 'e1-4',
       source: '1',
       target: '4',
       type: 'step',
-      style: { stroke: '#F28B1D', strokeWidth: 2 },
+      style: { stroke: 'oklch(0.52 0.123 42.70)', strokeWidth: 2 },
     },
     {
       id: 'e2-4',
       source: '2',
       target: '4',
       type: 'step',
-      style: { stroke: '#F28B1D', strokeWidth: 2 },
+      style: { stroke: 'oklch(0.52 0.123 42.70)', strokeWidth: 2 },
     },
     {
       id: 'e1-5',
       source: '1',
       target: '5',
       type: 'step',
-      style: { stroke: '#F28B1D', strokeWidth: 2 },
+      style: { stroke: 'oklch(0.52 0.123 42.70)', strokeWidth: 2 },
     },
     {
       id: 'e2-5',
       source: '2',
       target: '5',
       type: 'step',
-      style: { stroke: '#F28B1D', strokeWidth: 2 },
+      style: { stroke: 'oklch(0.52 0.123 42.70)', strokeWidth: 2 },
     },
 
     // Generation 2 -> 3
@@ -260,42 +262,42 @@ function FamilyTree() {
       source: '3',
       target: '6',
       type: 'step',
-      style: { stroke: '#F28B1D', strokeWidth: 2 },
+      style: { stroke: 'oklch(0.52 0.123 42.70)', strokeWidth: 2 },
     },
     {
       id: 'e4-6',
       source: '4',
       target: '6',
       type: 'step',
-      style: { stroke: '#F28B1D', strokeWidth: 2 },
+      style: { stroke: 'oklch(0.52 0.123 42.70)', strokeWidth: 2 },
     },
     {
       id: 'e3-7',
       source: '3',
       target: '7',
       type: 'step',
-      style: { stroke: '#F28B1D', strokeWidth: 2 },
+      style: { stroke: 'oklch(0.52 0.123 42.70)', strokeWidth: 2 },
     },
     {
       id: 'e4-7',
       source: '4',
       target: '7',
       type: 'step',
-      style: { stroke: '#F28B1D', strokeWidth: 2 },
+      style: { stroke: 'oklch(0.52 0.123 42.70)', strokeWidth: 2 },
     },
     {
       id: 'e3-8',
       source: '3',
       target: '8',
       type: 'step',
-      style: { stroke: '#F28B1D', strokeWidth: 2 },
+      style: { stroke: 'oklch(0.52 0.123 42.70)', strokeWidth: 2 },
     },
     {
       id: 'e4-8',
       source: '4',
       target: '8',
       type: 'step',
-      style: { stroke: '#F28B1D', strokeWidth: 2 },
+      style: { stroke: 'oklch(0.52 0.123 42.70)', strokeWidth: 2 },
     },
 
     // Generation 3 -> 4
@@ -304,57 +306,54 @@ function FamilyTree() {
       source: '6',
       target: '9',
       type: 'step',
-      style: { stroke: '#F28B1D', strokeWidth: 2 },
+      style: { stroke: 'oklch(0.52 0.123 42.70)', strokeWidth: 2 },
     },
     {
       id: 'e7-9',
       source: '7',
       target: '9',
       type: 'step',
-      style: { stroke: '#F28B1D', strokeWidth: 2 },
+      style: { stroke: 'oklch(0.52 0.123 42.70)', strokeWidth: 2 },
     },
     {
       id: 'e6-10',
       source: '6',
       target: '10',
       type: 'step',
-      style: { stroke: '#F28B1D', strokeWidth: 2 },
+      style: { stroke: 'oklch(0.52 0.123 42.70)', strokeWidth: 2 },
     },
     {
       id: 'e7-10',
       source: '7',
       target: '10',
       type: 'step',
-      style: { stroke: '#F28B1D', strokeWidth: 2 },
+      style: { stroke: 'oklch(0.52 0.123 42.70)', strokeWidth: 2 },
     },
     {
       id: 'e6-11',
       source: '6',
       target: '11',
       type: 'step',
-      style: { stroke: '#F28B1D', strokeWidth: 2 },
+      style: { stroke: 'oklch(0.52 0.123 42.70)', strokeWidth: 2 },
     },
     {
       id: 'e7-11',
       source: '7',
       target: '11',
       type: 'step',
-      style: { stroke: '#F28B1D', strokeWidth: 2 },
+      style: { stroke: 'oklch(0.52 0.123 42.70)', strokeWidth: 2 },
     },
     {
       id: 'e8-11',
       source: '8',
       target: '11',
       type: 'step',
-      style: { stroke: '#F28B1D', strokeWidth: 2 },
+      style: { stroke: 'oklch(0.52 0.123 42.70)', strokeWidth: 2 },
     },
   ]
 
   const [nodes, , onNodesChange] = useNodesState(initialNodes)
   const [edges, , onEdgesChange] = useEdgesState(initialEdges)
-
-  // Debug: Log edges to console
-  console.log('Edges:', edges.length, edges)
 
   const onNodeClick = useCallback((_event: React.MouseEvent, node: Node) => {
     setSelectedPerson(node.data as PersonData)
@@ -362,17 +361,14 @@ function FamilyTree() {
 
   return (
     <div className="space-y-8">
-      {/* Page Header */}
-      <div className="mb-10">
-        <h2 className="text-4xl font-serif text-gray-900 mb-3">Slektstreet</h2>
-        <p className="text-lg text-gray-600">
-          Utforsk fire generasjoner av familiehistorie og tradisjoner
-        </p>
-      </div>
+      <PageHeader
+        title="Slektstreet"
+        description="Utforsk fire generasjoner av familiehistorie og tradisjoner"
+      />
 
       {/* Family Tree Canvas */}
-      <div className="bg-white shadow-md border-2 border-gray-200 overflow-hidden rounded-lg">
-        <div className="h-175 [&_.react-flow\_\_edges]:relative [&_.react-flow\_\_edges]:z-10">
+      <div className="bg-card shadow-md border-2 border-border overflow-hidden rounded-lg">
+        <div className="h-175 [&_.react-flow\_\_edges]:relative [&_.react-flow\_\_edges]:z-0 [&_.react-flow\_\_nodes]:relative [&_.react-flow\_\_nodes]:z-10">
           <ReactFlow
             nodes={nodes}
             edges={edges}
@@ -388,21 +384,20 @@ function FamilyTree() {
             maxZoom={2}
             defaultViewport={{ x: 0, y: 0, zoom: 1 }}
             defaultEdgeOptions={{
-              style: { strokeWidth: 3, stroke: '#F28B1D' },
+              style: { strokeWidth: 3, stroke: 'oklch(0.52 0.123 42.70)' },
             }}
-            className="bg-transparent"
             proOptions={{ hideAttribution: true }}
           >
             <Controls
-              className="bg-white/90 border-2 border-gray-200 rounded-lg shadow-md [&_button]:bg-white [&_button]:border-gray-300 [&_button]:text-gray-700 [&_button:hover]:bg-gray-50 [&_button]:transition-all"
+              className="bg-card/90 border-2 border-border rounded-lg shadow-md [&_button]:bg-card [&_button]:border-input [&_button]:text-card-foreground [&_button:hover]:bg-muted [&_button]:transition-all"
               showInteractive={false}
             />
           </ReactFlow>
         </div>
 
         {/* Instructions */}
-        <div className="bg-white/90 backdrop-blur-sm px-6 py-4 border-t-2 border-gray-200">
-          <p className="text-center text-gray-700 font-medium text-sm uppercase tracking-wide">
+        <div className="bg-card/90 backdrop-blur-sm px-6 py-4 border-t-2 border-border">
+          <p className="text-center text-card-foreground font-medium text-sm uppercase tracking-wide">
             Bruk hjulet for å zoome • Klikk på kort for detaljer • Panorér med
             musen
           </p>
@@ -412,46 +407,46 @@ function FamilyTree() {
       {/* Person Detail Modal */}
       {selectedPerson && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-white shadow-2xl max-w-md w-full p-8 border-t-8 border-[#F28B1D] rounded-lg">
+          <div className="bg-card shadow-2xl max-w-md w-full p-8 border-t-8 border-primary rounded-lg">
             <div
               className="w-20 h-20 flex items-center justify-center mb-6 mx-auto rounded-md"
               style={{ backgroundColor: selectedPerson.color }}
             >
-              <User className="w-10 h-10 text-white" />
+              <User className="w-10 h-10 text-primary-foreground" />
             </div>
 
-            <h3 className="text-2xl font-semibold text-gray-900 mb-2 text-center">
+            <Heading level="h3" className="mb-2 text-center">
               {selectedPerson.name}
-            </h3>
+            </Heading>
 
             <div className="space-y-3 mb-8">
-              <div className="bg-gray-50 p-4 border-l-4 border-[#B4EDCE] rounded">
-                <div className="text-sm text-gray-600 mb-1 uppercase tracking-wide">
+              <div className="bg-muted p-4 border-l-4 border-chart-5 rounded">
+                <div className="text-sm text-muted-foreground mb-1 uppercase tracking-wide">
                   Født
                 </div>
-                <div className="text-lg font-semibold text-gray-900">
+                <div className="text-lg font-semibold text-foreground">
                   {selectedPerson.birth}
                 </div>
               </div>
 
               {selectedPerson.death && (
-                <div className="bg-gray-50 p-4 border-l-4 border-gray-300 rounded">
-                  <div className="text-sm text-gray-600 mb-1 uppercase tracking-wide">
+                <div className="bg-muted p-4 border-l-4 border-border rounded">
+                  <div className="text-sm text-muted-foreground mb-1 uppercase tracking-wide">
                     Død
                   </div>
-                  <div className="text-lg font-semibold text-gray-900">
+                  <div className="text-lg font-semibold text-foreground">
                     {selectedPerson.death}
                   </div>
                 </div>
               )}
 
               {selectedPerson.partnerId && (
-                <div className="bg-gray-50 p-4 border-l-4 border-[#D45E4C] rounded">
-                  <div className="text-sm text-gray-600 mb-1 flex items-center gap-2 uppercase tracking-wide">
+                <div className="bg-muted p-4 border-l-4 border-destructive rounded">
+                  <div className="text-sm text-muted-foreground mb-1 flex items-center gap-2 uppercase tracking-wide">
                     <Heart className="w-4 h-4" />
                     Partner
                   </div>
-                  <div className="text-lg font-semibold text-gray-900">
+                  <div className="text-lg font-semibold text-foreground">
                     {
                       familyMembers.find(
                         (p) => p.id === selectedPerson.partnerId,
@@ -464,7 +459,7 @@ function FamilyTree() {
 
             <button
               onClick={() => setSelectedPerson(null)}
-              className="w-full py-3 bg-[#F28B1D] text-white font-medium hover:bg-[#D45E4C] transition-all uppercase tracking-wide rounded"
+              className="w-full py-3 bg-primary text-primary-foreground font-medium hover:bg-primary/90 transition-all uppercase tracking-wide rounded"
             >
               Lukk
             </button>
@@ -475,6 +470,6 @@ function FamilyTree() {
   )
 }
 
-export const Route = createFileRoute('/family-tree')({
+export const Route = createFileRoute('/slektstre')({
   component: FamilyTree,
 })
