@@ -4,6 +4,7 @@ import { Home, Warehouse, Tractor, TreePine, Wheat, MapPin } from 'lucide-react'
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 import { PageHeader } from '@/components/ui/page-header'
 import { Heading } from '@/components/ui/heading'
+import { Button } from '@/components/ui/button'
 
 interface Building {
   id: string
@@ -92,9 +93,11 @@ function Map() {
               const isSelected = selectedBuilding?.id === building.id
 
               return (
-                <button
+                <Button
                   key={building.id}
                   onClick={() => setSelectedBuilding(building)}
+                  variant="ghost"
+                  size="icon"
                   style={{
                     left: `${building.position.x}%`,
                     top: `${building.position.y}%`,
@@ -123,7 +126,7 @@ function Map() {
                       {building.name}
                     </div>
                   </div>
-                </button>
+                </Button>
               )
             })}
 
@@ -181,10 +184,11 @@ function Map() {
                   {buildings.map((building) => {
                     const Icon = building.icon
                     return (
-                      <button
+                      <Button
                         key={building.id}
                         onClick={() => setSelectedBuilding(building)}
-                        className="w-full flex items-center gap-3 p-3 hover:bg-muted transition-all text-left border-l-4 border-transparent hover:border-primary"
+                        variant="ghost"
+                        className="w-full justify-start h-auto py-3"
                       >
                         <div className="w-10 h-10 bg-primary flex items-center justify-center shrink-0">
                           <Icon className="w-5 h-5 text-primary-foreground" />
@@ -197,7 +201,7 @@ function Map() {
                             {building.year}
                           </div>
                         </div>
-                      </button>
+                      </Button>
                     )
                   })}
                 </div>
@@ -210,6 +214,6 @@ function Map() {
   )
 }
 
-export const Route = createFileRoute('/kart')({
+export const Route = createFileRoute('/kart/')({
   component: Map,
 })

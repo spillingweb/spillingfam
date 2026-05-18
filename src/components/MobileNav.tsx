@@ -11,6 +11,7 @@ import {
 } from 'lucide-react'
 import { SignedIn, SignedOut, SignInButton } from '@clerk/clerk-react'
 import { Heading } from '@/components/ui/heading'
+import { Button } from '@/components/ui/button'
 
 interface MobileNavProps {
   isOpen: boolean
@@ -47,13 +48,14 @@ export function MobileNav({ isOpen, onClose, navItems }: MobileNavProps) {
             <Heading level="h4" className="font-semibold">
               Meny
             </Heading>
-            <button
+            <Button
               onClick={onClose}
-              className="p-2 text-muted-foreground hover:text-foreground hover:bg-muted rounded-lg transition-all"
+              variant="ghost"
+              size="icon-sm"
               aria-label="Close menu"
             >
               <X className="w-5 h-5" />
-            </button>
+            </Button>
           </div>
 
           {/* Navigation Items */}
@@ -85,7 +87,7 @@ export function MobileNav({ isOpen, onClose, navItems }: MobileNavProps) {
           <div className="p-4 border-t border-border space-y-2">
             <SignedIn>
               <Link
-                to="/profile"
+                to="/profil"
                 onClick={onClose}
                 className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all no-underline ${
                   location.pathname === '/profile'
@@ -99,10 +101,10 @@ export function MobileNav({ isOpen, onClose, navItems }: MobileNavProps) {
             </SignedIn>
             <SignedOut>
               <SignInButton mode="modal">
-                <button className="w-full flex items-center gap-3 px-4 py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-all font-medium">
+                <Button className="w-full">
                   <LogIn className="w-5 h-5" />
                   <span>Logg inn</span>
-                </button>
+                </Button>
               </SignInButton>
             </SignedOut>
           </div>

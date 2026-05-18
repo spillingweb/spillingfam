@@ -1,4 +1,5 @@
-import { ReactNode } from "react"
+import type { ReactNode } from "react"
+import { Heading } from "./heading"
 
 interface PageHeaderProps {
   title: string
@@ -8,9 +9,9 @@ interface PageHeaderProps {
 
 export function PageHeader({ title, description, action }: PageHeaderProps) {
   return (
-    <div className="mb-10 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+    <div className="mb-6 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
       <div>
-        <h2 className="text-4xl font-heading text-foreground mb-3">{title}</h2>
+        <Heading level="h2"> {title}</Heading>
         {description && (
           <p className="text-lg text-muted-foreground">{description}</p>
         )}

@@ -1,10 +1,24 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useAppForm } from '@/hooks/form'
+import { z } from 'zod'
 import { Plus, Edit2, Trash2, Clock, ChefHat, Users as UsersIcon } from "lucide-react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { PageHeader } from "@/components/ui/page-header";
 import { SearchInput } from "@/components/ui/search-input";
 import { Heading } from "@/components/ui/heading";
+import { Button } from "@/components/ui/button";
+
+// Zod schema for recipe validation
+const recipeSchema = z.object({
+  title: z.string().min(1, 'Tittel er påkrevd'),
+  author: z.string().min(1, 'Forfatter er påkrevd'),
+  cookTime: z.string().min(1, 'Tilberedningstid er påkrevd'),
+  servings: z.string().min(1, 'Porsjoner er påkrevd'),
+  ingredients: z.string().min(10, 'Ingredienser er påkrevd'),
+  instructions: z.string().min(10, 'Fremgangsmåte er påkrevd'),
+  story: z.string().optional(),
+})
 
 interface Recipe {
   id: string;
@@ -66,48 +80,62 @@ Smør til steking`,
   const [searchQuery, setSearchQuery] = useState("");
   const [showForm, setShowForm] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
-  const [formData, setFormData] = useState({
-    title: "",
-    author: "",
-    cookTime: "",
-    servings: "",
-    ingredients: "",
-    instructions: "",
-    story: "",
+
+  // Recipe Form
+  const recipeForm = useAppForm({
+    defaultValues: {
+      title: "",
+      author: "",
+      cookTime: "",
+      servings: "",
+      ingredients: "",
+      instructions: "",
+      story: "",
+    },
+    onSubmit: async ({ value }) => {
+      try {
+        const validated = recipeSchema.parse(value)
+
+        if (editingId) {
+          setRecipes(recipes.map(recipe =>
+            recipe.id === editingId
+              ? { ...recipe, ...validated }
+              : recipe
+          ));
+          setEditingId(null);
+        } else {
+          const newRecipe: Recipe = {
+            id: Date.now().toString(),
+            ...validated,
+          };
+          setRecipes([newRecipe, ...recipes]);
+        }
+
+        recipeForm.reset();
+        setShowForm(false);
+      } catch (error) {
+        console.error('Validation error:', error)
+      }
+    },
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-
+  // Update form when editing
+  useEffect(() => {
     if (editingId) {
-      setRecipes(recipes.map(recipe =>
-        recipe.id === editingId
-          ? { ...recipe, ...formData }
-          : recipe
-      ));
-      setEditingId(null);
-    } else {
-      const newRecipe: Recipe = {
-        id: Date.now().toString(),
-        ...formData,
-      };
-      setRecipes([newRecipe, ...recipes]);
+      const recipe = recipes.find(r => r.id === editingId)
+      if (recipe) {
+        recipeForm.setFieldValue('title', recipe.title)
+        recipeForm.setFieldValue('author', recipe.author)
+        recipeForm.setFieldValue('cookTime', recipe.cookTime)
+        recipeForm.setFieldValue('servings', recipe.servings)
+        recipeForm.setFieldValue('ingredients', recipe.ingredients)
+        recipeForm.setFieldValue('instructions', recipe.instructions)
+        recipeForm.setFieldValue('story', recipe.story || '')
+      }
     }
-
-    setFormData({ title: "", author: "", cookTime: "", servings: "", ingredients: "", instructions: "", story: "" });
-    setShowForm(false);
-  };
+  }, [editingId]);
 
   const handleEdit = (recipe: Recipe) => {
-    setFormData({
-      title: recipe.title,
-      author: recipe.author,
-      cookTime: recipe.cookTime,
-      servings: recipe.servings,
-      ingredients: recipe.ingredients,
-      instructions: recipe.instructions,
-      story: recipe.story || "",
-    });
     setEditingId(recipe.id);
     setShowForm(true);
   };
@@ -132,17 +160,16 @@ Smør til steking`,
         title="Familieoppskrifter"
         description="Tradisjonelle oppskrifter bevart gjennom generasjoner"
         action={
-          <button
+          <Button
             onClick={() => {
               setShowForm(!showForm);
               setEditingId(null);
-              setFormData({ title: "", author: "", cookTime: "", servings: "", ingredients: "", instructions: "", story: "" });
+              recipeForm.reset();
             }}
-            className="flex items-center gap-2 bg-primary text-primary-foreground px-8 py-3 hover:bg-primary/90 transition-all font-medium uppercase tracking-wide whitespace-nowrap"
           >
             <Plus className="w-5 h-5" />
             Legg til ny oppskrift
-          </button>
+          </Button>
         }
       />
 
@@ -161,121 +188,118 @@ Smør til steking`,
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <form
+              onSubmit={(e) => {
+                e.preventDefault()
+                e.stopPropagation()
+                recipeForm.handleSubmit()
+              }}
+              className="space-y-6"
+            >
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <label className="block text-sm font-medium text-card-foreground mb-2 uppercase tracking-wide">
-                    Navn på oppskrift
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    value={formData.title}
-                    onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                    className="w-full px-4 py-3 border-2 border-input focus:ring-0 focus:border-primary transition-all"
-                    placeholder="F.eks. Bestemors eplekake"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-card-foreground mb-2 uppercase tracking-wide">
-                    Oppskriftsforfatter
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    value={formData.author}
-                    onChange={(e) => setFormData({ ...formData, author: e.target.value })}
-                    className="w-full px-4 py-3 border-2 border-input focus:ring-0 focus:border-primary transition-all"
-                    placeholder="Navn"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-card-foreground mb-2 uppercase tracking-wide">
-                    Tilberedningstid
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    value={formData.cookTime}
-                    onChange={(e) => setFormData({ ...formData, cookTime: e.target.value })}
-                    className="w-full px-4 py-3 border-2 border-input focus:ring-0 focus:border-primary transition-all"
-                    placeholder="F.eks. 60 min"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-card-foreground mb-2 uppercase tracking-wide">
-                    Porsjoner
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    value={formData.servings}
-                    onChange={(e) => setFormData({ ...formData, servings: e.target.value })}
-                    className="w-full px-4 py-3 border-2 border-input focus:ring-0 focus:border-primary transition-all"
-                    placeholder="F.eks. 6-8"
-                  />
-                </div>
+                {/* Title Field */}
+                <recipeForm.AppField
+                  name="title"
+                  validators={{
+                    onChange: ({ value }) => {
+                      if (!value) return 'Tittel er påkrevd'
+                      return undefined
+                    },
+                  }}
+                >
+                  {(field) => <field.Input label="Navn på oppskrift" placeholder="F.eks. Bestemors eplekake" />}
+                </recipeForm.AppField>
+
+                {/* Author Field */}
+                <recipeForm.AppField
+                  name="author"
+                  validators={{
+                    onChange: ({ value }) => {
+                      if (!value) return 'Forfatter er påkrevd'
+                      return undefined
+                    },
+                  }}
+                >
+                  {(field) => <field.Input label="Oppskriftsforfatter" placeholder="Navn" />}
+                </recipeForm.AppField>
+
+                {/* Cook Time Field */}
+                <recipeForm.AppField
+                  name="cookTime"
+                  validators={{
+                    onChange: ({ value }) => {
+                      if (!value) return 'Tilberedningstid er påkrevd'
+                      return undefined
+                    },
+                  }}
+                >
+                  {(field) => <field.Input label="Tilberedningstid" placeholder="F.eks. 60 min" />}
+                </recipeForm.AppField>
+
+                {/* Servings Field */}
+                <recipeForm.AppField
+                  name="servings"
+                  validators={{
+                    onChange: ({ value }) => {
+                      if (!value) return 'Porsjoner er påkrevd'
+                      return undefined
+                    },
+                  }}
+                >
+                  {(field) => <field.Input label="Porsjoner" placeholder="F.eks. 6-8" />}
+                </recipeForm.AppField>
               </div>
 
-              <div>
-                <label className="block text-sm font-medium text-card-foreground mb-2 uppercase tracking-wide">
-                  Ingredienser
-                </label>
-                <textarea
-                  required
-                  value={formData.ingredients}
-                  onChange={(e) => setFormData({ ...formData, ingredients: e.target.value })}
-                  rows={6}
-                  className="w-full px-4 py-3 border-2 border-input focus:ring-0 focus:border-primary transition-all resize-none"
-                  placeholder="Skriv hver ingrediens på en ny linje..."
-                />
-              </div>
+              {/* Ingredients Field */}
+              <recipeForm.AppField
+                name="ingredients"
+                validators={{
+                  onChange: ({ value }) => {
+                    if (!value) return 'Ingredienser er påkrevd'
+                    if (value.length < 10) return 'Ingredienser må være minst 10 tegn'
+                    return undefined
+                  },
+                }}
+              >
+                {(field) => <field.TextArea label="Ingredienser" rows={6} placeholder="Skriv hver ingrediens på en ny linje..." />}
+              </recipeForm.AppField>
 
-              <div>
-                <label className="block text-sm font-medium text-card-foreground mb-2 uppercase tracking-wide">
-                  Fremgangsmåte
-                </label>
-                <textarea
-                  required
-                  value={formData.instructions}
-                  onChange={(e) => setFormData({ ...formData, instructions: e.target.value })}
-                  rows={8}
-                  className="w-full px-4 py-3 border-2 border-input focus:ring-0 focus:border-primary transition-all resize-none"
-                  placeholder="Beskriv fremgangsmåten steg for steg..."
-                />
-              </div>
+              {/* Instructions Field */}
+              <recipeForm.AppField
+                name="instructions"
+                validators={{
+                  onChange: ({ value }) => {
+                    if (!value) return 'Fremgangsmåte er påkrevd'
+                    if (value.length < 10) return 'Fremgangsmåte må være minst 10 tegn'
+                    return undefined
+                  },
+                }}
+              >
+                {(field) => <field.TextArea label="Fremgangsmåte" rows={8} placeholder="Beskriv fremgangsmåten steg for steg..." />}
+              </recipeForm.AppField>
 
-              <div>
-                <label className="block text-sm font-medium text-card-foreground mb-2 uppercase tracking-wide">
-                  Historie (valgfritt)
-                </label>
-                <textarea
-                  value={formData.story}
-                  onChange={(e) => setFormData({ ...formData, story: e.target.value })}
-                  rows={4}
-                  className="w-full px-4 py-3 border-2 border-input focus:ring-0 focus:border-primary transition-all resize-none"
-                  placeholder="Del historien bak oppskriften..."
-                />
-              </div>
+              {/* Story Field (Optional) */}
+              <recipeForm.AppField name="story">
+                {(field) => <field.TextArea label="Historie (valgfritt)" rows={4} placeholder="Del historien bak oppskriften..." />}
+              </recipeForm.AppField>
 
               <div className="flex gap-3">
-                <button
+                <Button
                   type="submit"
-                  className="bg-primary text-primary-foreground px-8 py-3 hover:bg-primary/90 transition-all font-medium uppercase tracking-wide"
                 >
                   {editingId ? "Oppdater" : "Publiser"}
-                </button>
-                <button
+                </Button>
+                <Button
                   type="button"
                   onClick={() => {
                     setShowForm(false);
                     setEditingId(null);
-                    setFormData({ title: "", author: "", cookTime: "", servings: "", ingredients: "", instructions: "", story: "" });
+                    recipeForm.reset();
                   }}
-                  className="bg-secondary text-secondary-foreground px-8 py-3 hover:bg-secondary/90 transition-all font-medium uppercase tracking-wide"
+                  variant="secondary"
                 >
                   Avbryt
-                </button>
+                </Button>
               </div>
             </form>
           </CardContent>
@@ -314,20 +338,22 @@ Smør til steking`,
                 </div>
               </div>
               <div className="flex gap-2">
-                <button
+                <Button
                   onClick={() => handleEdit(recipe)}
-                  className="p-2 text-muted-foreground hover:bg-muted transition-all"
+                  variant="ghost"
+                  size="icon-sm"
                   title="Rediger oppskrift"
                 >
                   <Edit2 className="w-5 h-5" />
-                </button>
-                <button
+                </Button>
+                <Button
                   onClick={() => handleDelete(recipe.id)}
-                  className="p-2 text-muted-foreground hover:bg-muted transition-all"
+                  variant="ghost"
+                  size="icon-sm"
                   title="Slett oppskrift"
                 >
                   <Trash2 className="w-5 h-5" />
-                </button>
+                </Button>
               </div>
             </div>
 
@@ -361,6 +387,6 @@ Smør til steking`,
   );
 }
 
-export const Route = createFileRoute('/oppskrifter')({
+export const Route = createFileRoute('/oppskrifter/')({
   component: Recipes,
 })

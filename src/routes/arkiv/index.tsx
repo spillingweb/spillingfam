@@ -5,6 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { PageHeader } from "@/components/ui/page-header";
 import { SearchInput } from "@/components/ui/search-input";
 import { Heading } from "@/components/ui/heading";
+import { Button } from "@/components/ui/button";
 
 interface ArchiveItem {
   id: string;
@@ -101,10 +102,10 @@ function Archive() {
         title="Familiearkiv"
         description="Et århundre med minner bevart i fotografier og dokumenter"
         action={
-          <button className="flex items-center gap-2 bg-primary text-primary-foreground px-6 py-2 hover:bg-primary/90 transition-all font-medium uppercase tracking-wide whitespace-nowrap">
+          <Button>
             <Upload className="w-5 h-5" />
             Last opp
-          </button>
+          </Button>
         }
       />
 
@@ -120,38 +121,26 @@ function Archive() {
         {/* Filter Controls */}
         <div className="flex flex-wrap items-center gap-4">
         <Filter className="w-5 h-5 text-muted-foreground" />
-        <button
+        <Button
           onClick={() => setFilter("all")}
-          className={`px-5 py-2 transition-all font-medium uppercase tracking-wide text-sm ${
-            filter === "all"
-              ? "bg-chart-4 text-foreground"
-              : "bg-card text-card-foreground hover:bg-muted border-2 border-border"
-          }`}
+          variant={filter === "all" ? "default" : "outline"}
         >
           Alle elementer
-        </button>
-        <button
+        </Button>
+        <Button
           onClick={() => setFilter("photo")}
-          className={`px-5 py-2 transition-all flex items-center gap-2 font-medium uppercase tracking-wide text-sm ${
-            filter === "photo"
-              ? "bg-chart-4 text-foreground"
-              : "bg-card text-card-foreground hover:bg-muted border-2 border-border"
-          }`}
+          variant={filter === "photo" ? "default" : "outline"}
         >
           <ImageIcon className="w-4 h-4" />
           Fotografier
-        </button>
-        <button
+        </Button>
+        <Button
           onClick={() => setFilter("document")}
-          className={`px-5 py-2 transition-all flex items-center gap-2 font-medium uppercase tracking-wide text-sm ${
-            filter === "document"
-              ? "bg-chart-4 text-foreground"
-              : "bg-card text-card-foreground hover:bg-muted border-2 border-border"
-          }`}
+          variant={filter === "document" ? "default" : "outline"}
         >
           <FileText className="w-4 h-4" />
           Dokumenter
-        </button>
+        </Button>
         </div>
       </div>
 
@@ -204,12 +193,14 @@ function Archive() {
         <div className="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-4">
           <Card className="relative max-w-5xl w-full overflow-hidden shadow-2xl border-t-8 border-primary">
             {/* Close Button */}
-            <button
+            <Button
               onClick={() => setSelectedItem(null)}
-              className="absolute top-4 right-4 z-10 bg-foreground text-background p-2 hover:bg-foreground/90 transition-all"
+              className="absolute top-4 right-4 z-10"
+              variant="ghost"
+              size="icon"
             >
               <X className="w-6 h-6" />
-            </button>
+            </Button>
 
             <div>
               <div className="grid grid-cols-1 lg:grid-cols-2">
@@ -274,6 +265,6 @@ function Archive() {
   );
 }
 
-export const Route = createFileRoute('/arkiv')({
+export const Route = createFileRoute('/arkiv/')({
   component: Archive,
 })

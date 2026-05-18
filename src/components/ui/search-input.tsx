@@ -1,4 +1,5 @@
 import { Search } from "lucide-react"
+import { InputGroup, InputGroupAddon, InputGroupInput } from "./input-group"
 
 interface SearchInputProps {
   value: string
@@ -14,15 +15,15 @@ export function SearchInput({
   className = ""
 }: SearchInputProps) {
   return (
-    <div className={`relative max-w-md ${className}`}>
-      <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
-      <input
-        type="text"
+    <InputGroup className={className}>
+      <InputGroupAddon>
+        <Search />
+      </InputGroupAddon>
+      <InputGroupInput
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
-        className="w-full pl-12 pr-4 py-3 border-2 border-input focus:ring-0 focus:border-primary transition-all"
       />
-    </div>
+    </InputGroup>
   )
 }

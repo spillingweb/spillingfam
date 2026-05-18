@@ -9,98 +9,88 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as SlektstreRouteImport } from './routes/slektstre'
-import { Route as ProfileRouteImport } from './routes/profile'
-import { Route as ProfilRouteImport } from './routes/profil'
-import { Route as OppskrifterRouteImport } from './routes/oppskrifter'
-import { Route as KartRouteImport } from './routes/kart'
-import { Route as HistorieRouteImport } from './routes/historie'
-import { Route as ArkivRouteImport } from './routes/arkiv'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as SlektstreIndexRouteImport } from './routes/slektstre/index'
+import { Route as ProfilIndexRouteImport } from './routes/profil/index'
+import { Route as OppskrifterIndexRouteImport } from './routes/oppskrifter/index'
+import { Route as KartIndexRouteImport } from './routes/kart/index'
+import { Route as HistorieIndexRouteImport } from './routes/historie/index'
+import { Route as ArkivIndexRouteImport } from './routes/arkiv/index'
 
-const SlektstreRoute = SlektstreRouteImport.update({
-  id: '/slektstre',
-  path: '/slektstre',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ProfileRoute = ProfileRouteImport.update({
-  id: '/profile',
-  path: '/profile',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ProfilRoute = ProfilRouteImport.update({
-  id: '/profil',
-  path: '/profil',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const OppskrifterRoute = OppskrifterRouteImport.update({
-  id: '/oppskrifter',
-  path: '/oppskrifter',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const KartRoute = KartRouteImport.update({
-  id: '/kart',
-  path: '/kart',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const HistorieRoute = HistorieRouteImport.update({
-  id: '/historie',
-  path: '/historie',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ArkivRoute = ArkivRouteImport.update({
-  id: '/arkiv',
-  path: '/arkiv',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SlektstreIndexRoute = SlektstreIndexRouteImport.update({
+  id: '/slektstre/',
+  path: '/slektstre/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProfilIndexRoute = ProfilIndexRouteImport.update({
+  id: '/profil/',
+  path: '/profil/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OppskrifterIndexRoute = OppskrifterIndexRouteImport.update({
+  id: '/oppskrifter/',
+  path: '/oppskrifter/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const KartIndexRoute = KartIndexRouteImport.update({
+  id: '/kart/',
+  path: '/kart/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HistorieIndexRoute = HistorieIndexRouteImport.update({
+  id: '/historie/',
+  path: '/historie/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ArkivIndexRoute = ArkivIndexRouteImport.update({
+  id: '/arkiv/',
+  path: '/arkiv/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/arkiv': typeof ArkivRoute
-  '/historie': typeof HistorieRoute
-  '/kart': typeof KartRoute
-  '/oppskrifter': typeof OppskrifterRoute
-  '/profil': typeof ProfilRoute
-  '/profile': typeof ProfileRoute
-  '/slektstre': typeof SlektstreRoute
+  '/arkiv/': typeof ArkivIndexRoute
+  '/historie/': typeof HistorieIndexRoute
+  '/kart/': typeof KartIndexRoute
+  '/oppskrifter/': typeof OppskrifterIndexRoute
+  '/profil/': typeof ProfilIndexRoute
+  '/slektstre/': typeof SlektstreIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/arkiv': typeof ArkivRoute
-  '/historie': typeof HistorieRoute
-  '/kart': typeof KartRoute
-  '/oppskrifter': typeof OppskrifterRoute
-  '/profil': typeof ProfilRoute
-  '/profile': typeof ProfileRoute
-  '/slektstre': typeof SlektstreRoute
+  '/arkiv': typeof ArkivIndexRoute
+  '/historie': typeof HistorieIndexRoute
+  '/kart': typeof KartIndexRoute
+  '/oppskrifter': typeof OppskrifterIndexRoute
+  '/profil': typeof ProfilIndexRoute
+  '/slektstre': typeof SlektstreIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/arkiv': typeof ArkivRoute
-  '/historie': typeof HistorieRoute
-  '/kart': typeof KartRoute
-  '/oppskrifter': typeof OppskrifterRoute
-  '/profil': typeof ProfilRoute
-  '/profile': typeof ProfileRoute
-  '/slektstre': typeof SlektstreRoute
+  '/arkiv/': typeof ArkivIndexRoute
+  '/historie/': typeof HistorieIndexRoute
+  '/kart/': typeof KartIndexRoute
+  '/oppskrifter/': typeof OppskrifterIndexRoute
+  '/profil/': typeof ProfilIndexRoute
+  '/slektstre/': typeof SlektstreIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/arkiv'
-    | '/historie'
-    | '/kart'
-    | '/oppskrifter'
-    | '/profil'
-    | '/profile'
-    | '/slektstre'
+    | '/arkiv/'
+    | '/historie/'
+    | '/kart/'
+    | '/oppskrifter/'
+    | '/profil/'
+    | '/slektstre/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -109,82 +99,30 @@ export interface FileRouteTypes {
     | '/kart'
     | '/oppskrifter'
     | '/profil'
-    | '/profile'
     | '/slektstre'
   id:
     | '__root__'
     | '/'
-    | '/arkiv'
-    | '/historie'
-    | '/kart'
-    | '/oppskrifter'
-    | '/profil'
-    | '/profile'
-    | '/slektstre'
+    | '/arkiv/'
+    | '/historie/'
+    | '/kart/'
+    | '/oppskrifter/'
+    | '/profil/'
+    | '/slektstre/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  ArkivRoute: typeof ArkivRoute
-  HistorieRoute: typeof HistorieRoute
-  KartRoute: typeof KartRoute
-  OppskrifterRoute: typeof OppskrifterRoute
-  ProfilRoute: typeof ProfilRoute
-  ProfileRoute: typeof ProfileRoute
-  SlektstreRoute: typeof SlektstreRoute
+  ArkivIndexRoute: typeof ArkivIndexRoute
+  HistorieIndexRoute: typeof HistorieIndexRoute
+  KartIndexRoute: typeof KartIndexRoute
+  OppskrifterIndexRoute: typeof OppskrifterIndexRoute
+  ProfilIndexRoute: typeof ProfilIndexRoute
+  SlektstreIndexRoute: typeof SlektstreIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/slektstre': {
-      id: '/slektstre'
-      path: '/slektstre'
-      fullPath: '/slektstre'
-      preLoaderRoute: typeof SlektstreRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/profile': {
-      id: '/profile'
-      path: '/profile'
-      fullPath: '/profile'
-      preLoaderRoute: typeof ProfileRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/profil': {
-      id: '/profil'
-      path: '/profil'
-      fullPath: '/profil'
-      preLoaderRoute: typeof ProfilRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/oppskrifter': {
-      id: '/oppskrifter'
-      path: '/oppskrifter'
-      fullPath: '/oppskrifter'
-      preLoaderRoute: typeof OppskrifterRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/kart': {
-      id: '/kart'
-      path: '/kart'
-      fullPath: '/kart'
-      preLoaderRoute: typeof KartRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/historie': {
-      id: '/historie'
-      path: '/historie'
-      fullPath: '/historie'
-      preLoaderRoute: typeof HistorieRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/arkiv': {
-      id: '/arkiv'
-      path: '/arkiv'
-      fullPath: '/arkiv'
-      preLoaderRoute: typeof ArkivRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/': {
       id: '/'
       path: '/'
@@ -192,18 +130,59 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/slektstre/': {
+      id: '/slektstre/'
+      path: '/slektstre'
+      fullPath: '/slektstre/'
+      preLoaderRoute: typeof SlektstreIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/profil/': {
+      id: '/profil/'
+      path: '/profil'
+      fullPath: '/profil/'
+      preLoaderRoute: typeof ProfilIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/oppskrifter/': {
+      id: '/oppskrifter/'
+      path: '/oppskrifter'
+      fullPath: '/oppskrifter/'
+      preLoaderRoute: typeof OppskrifterIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/kart/': {
+      id: '/kart/'
+      path: '/kart'
+      fullPath: '/kart/'
+      preLoaderRoute: typeof KartIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/historie/': {
+      id: '/historie/'
+      path: '/historie'
+      fullPath: '/historie/'
+      preLoaderRoute: typeof HistorieIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/arkiv/': {
+      id: '/arkiv/'
+      path: '/arkiv'
+      fullPath: '/arkiv/'
+      preLoaderRoute: typeof ArkivIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  ArkivRoute: ArkivRoute,
-  HistorieRoute: HistorieRoute,
-  KartRoute: KartRoute,
-  OppskrifterRoute: OppskrifterRoute,
-  ProfilRoute: ProfilRoute,
-  ProfileRoute: ProfileRoute,
-  SlektstreRoute: SlektstreRoute,
+  ArkivIndexRoute: ArkivIndexRoute,
+  HistorieIndexRoute: HistorieIndexRoute,
+  KartIndexRoute: KartIndexRoute,
+  OppskrifterIndexRoute: OppskrifterIndexRoute,
+  ProfilIndexRoute: ProfilIndexRoute,
+  SlektstreIndexRoute: SlektstreIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

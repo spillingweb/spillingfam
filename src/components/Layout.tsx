@@ -12,6 +12,7 @@ import {
   Sun,
   Clock,
 } from 'lucide-react'
+import { Button } from '@/components/ui/button'
 import {
   SignedIn,
   SignedOut,
@@ -23,6 +24,7 @@ import { useState } from 'react'
 import { useDarkMode } from '../hooks/useDarkMode'
 import { MobileNav } from './MobileNav'
 import { HamburgerButton } from './HamburgerButton'
+import { cn } from '#/lib/utils'
 
 export function Layout() {
   const location = useLocation()
@@ -42,7 +44,7 @@ export function Layout() {
 
   return (
     <div
-      className={`${isHomePage ? 'h-dvh overflow-hidden' : 'min-h-screen bg-background'}`}
+      className={`h-dvh ${isHomePage ? 'overflow-hidden' : 'min-h-screen bg-background'} flex flex-col`}
     >
       {/* Header */}
       <header
@@ -52,7 +54,7 @@ export function Layout() {
             : 'bg-accent/95 backdrop-blur-md border-b border-accent shadow-sm'
         }`}
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className={cn("mx-auto px-4 sm:px-6 lg:px-8")}>
           <div className="flex items-center justify-between h-20">
             <Link to="/" className="group">
               <div
@@ -82,7 +84,7 @@ export function Layout() {
                       isActive
                         ? isHomePage
                           ? 'text-white underline underline-offset-4'
-                          : 'bg-background text-foreground'
+                          : 'bg-background/30 text-foreground'
                         : isHomePage
                           ? 'text-white/90 hover:text-white'
                           : 'text-accent-foreground/80 hover:text-accent-foreground hover:bg-background/30'
@@ -127,7 +129,7 @@ export function Layout() {
                   to="/profil"
                   className={`hidden md:block p-2.5 transition-all no-underline ${
                     location.pathname === '/profil'
-                      ? 'bg-background text-foreground'
+                      ? 'bg-background/30 text-foreground'
                       : isHomePage
                         ? 'text-white/90 hover:text-white'
                         : 'text-accent-foreground/80 hover:text-accent-foreground hover:bg-background/30'
@@ -138,16 +140,13 @@ export function Layout() {
               </SignedIn>
               <SignedOut>
                 <SignInButton mode="modal">
-                  <button
-                    className={`hidden md:flex px-4 py-2 transition-all font-medium items-center gap-2 ${
-                      isHomePage
-                        ? 'bg-white/20 text-white hover:bg-white/30 border border-white/30'
-                        : 'bg-primary text-white hover:bg-primary/90'
-                    }`}
+                  <Button
+                    className="hidden md:flex"
+                    variant={isHomePage ? "ghost" : "default"}
                   >
                     <LogIn className="w-4 h-4" />
                     Logg inn
-                  </button>
+                  </Button>
                 </SignInButton>
               </SignedOut>
             </div>
@@ -164,20 +163,20 @@ export function Layout() {
 
       {/* Main Content */}
       <main
-        className={`relative z-10 ${isHomePage ? 'h-full' : 'max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 pt-32'}`}
+        className={`flex-1 z-10 ${isHomePage ? 'h-full' : 'max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 pt-25 lg:pt-32'}`}
       >
         <Outlet />
       </main>
 
       {/* Footer */}
       {!isHomePage && (
-        <footer className="relative z-10 mt-20">
+        <footer className="z-10 mt-20 text-sm">
           <div
-            className="bg-muted py-8"
+            className="bg-muted py-5"
             style={{ clipPath: 'polygon(0 15%, 100% 0, 100% 100%, 0 100%)' }}
           >
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-              <p className="text-card-foreground font-medium">
+              <p className="text-muted-foreground font-medium">
                 © {new Date().getFullYear()}{' '}
                 <a href="https://spillingweb.com">Spilling Web</a>. Alle
                 rettigheter reservert.

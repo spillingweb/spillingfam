@@ -1,12 +1,24 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useAppForm } from '@/hooks/form'
+import { z } from 'zod'
 import { Plus, Edit2, Trash2, Calendar } from 'lucide-react'
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 import { PageHeader } from '@/components/ui/page-header'
 import { SearchInput } from '@/components/ui/search-input'
 import { Heading } from '@/components/ui/heading'
+import { DUMMY_HISTORY } from './-lib/dummy-history'
+import { Button } from '@/components/ui/button'
 
-export const Route = createFileRoute('/historie')({ component: Stories })
+// Zod schema for story validation
+const storySchema = z.object({
+  title: z.string().min(1, 'Tittel er påkrevd'),
+  author: z.string().min(1, 'Forfatter er påkrevd'),
+  year: z.string().min(1, 'År er påkrevd'),
+  content: z.string().min(10, 'Historien må være minst 10 tegn'),
+})
+
+export const Route = createFileRoute('/historie/')({ component: Stories })
 
 interface Story {
   id: string
@@ -18,92 +30,68 @@ interface Story {
 }
 
 function Stories() {
-  const [stories, setStories] = useState<Story[]>([
-    {
-      id: '1',
-      title: 'Den store innhøstingen av 1952',
-      year: '1952',
-      date: '2024-03-15',
-      content:
-        'Den sommeren, fortalte bestefar oss, var ulikt noen annen. Hveten vokste gyllen og høy, og vaiet i bølger over hele sørjordet. Det var et mirakel etter alle de tørre årene, da regnet kom akkurat når vi trengte det mest.',
-      author: 'Kari Johnsen',
-    },
-    {
-      id: '2',
-      title: 'Bygging av den gamle låven',
-      year: '1928',
-      date: '2024-02-20',
-      content:
-        'I 1928 kom hele bygda sammen for å reise låven som fortsatt står i dag. Onkel Henrik husket hvordan naboer kom langveisfra for å hjelpe til. Det var en tradisjon på den tiden - alle hjalp hverandre når det gjaldt store byggeprosjekter.',
-      author: 'Per Andersen',
-    },
-    {
-      id: '3',
-      title: 'Gårdens første traktor',
-      year: '1945',
-      date: '2024-01-10',
-      content:
-        'Etter krigen kjøpte bestefar gårdens første traktor. Det var en Ferguson, og hele familien samlet seg for å se på når den kom kjørende opp gårdsveien. Hestene ble nervøse, men barna var fascinerte.',
-      author: 'Henrik Johansen',
-    },
-    {
-      id: '4',
-      title: 'Oppstart av Spilling gård',
-      year: '1912',
-      date: '2023-12-05',
-      content:
-        'I 1912 etablerte oldefar Johan den første husmannsplassen som senere skulle bli Spilling gård. Med tomme hender og stor vilje bygde han opp det som skulle bli hjemmet vårt for generasjoner fremover.',
-      author: 'Marit Persdatter',
-    },
-  ])
-
+  const [stories, setStories] = useState<Story[]>(DUMMY_HISTORY)
   const [selectedYear, setSelectedYear] = useState<string | null>(null)
   const [searchQuery, setSearchQuery] = useState('')
   const [showForm, setShowForm] = useState(false)
   const [editingId, setEditingId] = useState<string | null>(null)
-  const [formData, setFormData] = useState({
-    title: '',
-    author: '',
-    year: '',
-    content: '',
+
+  // Story Form
+  const storyForm = useAppForm({
+    defaultValues: {
+      title: '',
+      author: '',
+      year: '',
+      content: '',
+    },
+    onSubmit: async ({ value }) => {
+      try {
+        const validated = storySchema.parse(value)
+        
+        if (editingId) {
+          setStories(
+            stories.map((story) =>
+              story.id === editingId
+                ? {
+                    ...story,
+                    ...validated,
+                    date: new Date().toISOString().split('T')[0],
+                  }
+                : story,
+            ),
+          )
+          setEditingId(null)
+        } else {
+          const newStory: Story = {
+            id: Date.now().toString(),
+            ...validated,
+            date: new Date().toISOString().split('T')[0],
+          }
+          setStories([newStory, ...stories])
+        }
+
+        storyForm.reset()
+        setShowForm(false)
+      } catch (error) {
+        console.error('Validation error:', error)
+      }
+    },
   })
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-
+  // Update form when editing
+  useEffect(() => {
     if (editingId) {
-      setStories(
-        stories.map((story) =>
-          story.id === editingId
-            ? {
-                ...story,
-                ...formData,
-                date: new Date().toISOString().split('T')[0],
-              }
-            : story,
-        ),
-      )
-      setEditingId(null)
-    } else {
-      const newStory: Story = {
-        id: Date.now().toString(),
-        ...formData,
-        date: new Date().toISOString().split('T')[0],
+      const story = stories.find(s => s.id === editingId)
+      if (story) {
+        storyForm.setFieldValue('title', story.title)
+        storyForm.setFieldValue('author', story.author)
+        storyForm.setFieldValue('year', story.year)
+        storyForm.setFieldValue('content', story.content)
       }
-      setStories([newStory, ...stories])
     }
-
-    setFormData({ title: '', author: '', year: '', content: '' })
-    setShowForm(false)
-  }
+  }, [editingId])
 
   const handleEdit = (story: Story) => {
-    setFormData({
-      title: story.title,
-      author: story.author,
-      year: story.year,
-      content: story.content,
-    })
     setEditingId(story.id)
     setShowForm(true)
   }
@@ -139,17 +127,16 @@ function Stories() {
         title="Familiehistorier"
         description="Del og bevar minnene som formet gården vår"
         action={
-          <button
+          <Button
             onClick={() => {
               setShowForm(!showForm)
               setEditingId(null)
-              setFormData({ title: '', author: '', year: '', content: '' })
+              storyForm.reset()
             }}
-            className="flex items-center gap-2 bg-primary text-primary-foreground px-8 py-3 hover:bg-primary/90 transition-all font-medium uppercase tracking-wide whitespace-nowrap"
           >
             <Plus className="w-5 h-5" />
             Legg til ny historie
-          </button>
+          </Button>
         }
       />
 
@@ -160,9 +147,9 @@ function Stories() {
       />
 
       {/* Interactive Timeline */}
-      <div className="relative px-8">
+      <div className="relative px-8 pt-6">
         {/* Timeline bar */}
-        <div className="absolute left-8 right-8 top-1/2 h-1 bg-muted"></div>
+        <div className="absolute left-8 right-8 top-13.5 h-1 bg-muted"></div>
 
         {/* Timeline events */}
         <div className="relative flex justify-between items-center py-8">
@@ -171,10 +158,12 @@ function Stories() {
             const position = ((parseInt(story.year) - minYear) / (maxYear - minYear)) * 100
 
             return (
-              <button
+              <Button
                 key={story.id}
                 onClick={() => setSelectedYear(isSelected ? null : story.year)}
                 className="group relative"
+                variant="ghost"
+                size="icon-xs"
                 style={{
                   position: 'absolute',
                   left: `${position}%`,
@@ -192,7 +181,7 @@ function Stories() {
 
                 {/* Year label */}
                 <div
-                  className={`absolute -top-12 left-1/2 -translate-x-1/2 whitespace-nowrap font-semibold transition-all ${
+                  className={`absolute -top-10 left-1/2 -translate-x-1/2 whitespace-nowrap font-semibold transition-all ${
                     isSelected ? 'text-primary text-lg' : 'text-card-foreground text-sm group-hover:text-primary'
                   }`}
                 >
@@ -203,19 +192,20 @@ function Stories() {
                 <div className="absolute -bottom-16 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap bg-foreground text-primary-foreground text-xs px-3 py-2 pointer-events-none max-w-[200px] truncate">
                   {story.title}
                 </div>
-              </button>
+              </Button>
             )
           })}
         </div>
 
         {selectedYear && (
-          <div className="mt-8">
-            <button
+          <div className="text-right">
+            <Button
               onClick={() => setSelectedYear(null)}
-              className="text-sm text-muted-foreground hover:text-foreground uppercase tracking-wide"
+              variant="ghost"
+              size="sm"
             >
               ← Vis alle historier
-            </button>
+            </Button>
           </div>
         )}
       </div>
@@ -229,79 +219,86 @@ function Stories() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <form
+              onSubmit={(e) => {
+                e.preventDefault()
+                e.stopPropagation()
+                storyForm.handleSubmit()
+              }}
+              className="space-y-6"
+            >
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <label className="block text-sm font-medium text-card-foreground mb-2 uppercase tracking-wide">
-                    Tittel
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    value={formData.title}
-                    onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                    className="w-full px-4 py-3 border-2 border-input focus:ring-0 focus:border-primary transition-all"
-                    placeholder="Skriv inn tittel..."
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-card-foreground mb-2 uppercase tracking-wide">
-                    År (historisk kontekst)
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    value={formData.year}
-                    onChange={(e) => setFormData({ ...formData, year: e.target.value })}
-                    className="w-full px-4 py-3 border-2 border-input focus:ring-0 focus:border-primary transition-all"
-                    placeholder="F.eks. 1952"
-                  />
-                </div>
+                {/* Title Field */}
+                <storyForm.AppField
+                  name="title"
+                  validators={{
+                    onChange: ({ value }) => {
+                      if (!value) return 'Tittel er påkrevd'
+                      return undefined
+                    },
+                  }}
+                >
+                  {(field) => <field.Input label="Tittel" placeholder="Skriv inn tittel..." />}
+                </storyForm.AppField>
+
+                {/* Year Field */}
+                <storyForm.AppField
+                  name="year"
+                  validators={{
+                    onChange: ({ value }) => {
+                      if (!value) return 'År er påkrevd'
+                      return undefined
+                    },
+                  }}
+                >
+                  {(field) => <field.Input label="År (historisk kontekst)" placeholder="F.eks. 1952" />}
+                </storyForm.AppField>
               </div>
-              <div>
-                <label className="block text-sm font-medium text-card-foreground mb-2 uppercase tracking-wide">
-                  Forfatter
-                </label>
-                <input
-                  type="text"
-                  required
-                  value={formData.author}
-                  onChange={(e) => setFormData({ ...formData, author: e.target.value })}
-                  className="w-full px-4 py-3 border-2 border-input focus:ring-0 focus:border-primary transition-all"
-                  placeholder="Ditt navn..."
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-card-foreground mb-2 uppercase tracking-wide">
-                  Historie
-                </label>
-                <textarea
-                  required
-                  value={formData.content}
-                  onChange={(e) => setFormData({ ...formData, content: e.target.value })}
-                  rows={8}
-                  className="w-full px-4 py-3 border-2 border-input focus:ring-0 focus:border-primary transition-all resize-none"
-                  placeholder="Del din historie..."
-                />
-              </div>
+
+              {/* Author Field */}
+              <storyForm.AppField
+                name="author"
+                validators={{
+                  onChange: ({ value }) => {
+                    if (!value) return 'Forfatter er påkrevd'
+                    return undefined
+                  },
+                }}
+              >
+                {(field) => <field.Input label="Forfatter" placeholder="Ditt navn..." />}
+              </storyForm.AppField>
+
+              {/* Content Field */}
+              <storyForm.AppField
+                name="content"
+                validators={{
+                  onChange: ({ value }) => {
+                    if (!value) return 'Historie er påkrevd'
+                    if (value.length < 10) return 'Historien må være minst 10 tegn'
+                    return undefined
+                  },
+                }}
+              >
+                {(field) => <field.TextArea label="Historie" rows={8} placeholder="Del din historie..." />}
+              </storyForm.AppField>
+
               <div className="flex gap-3">
-                <button
+                <Button
                   type="submit"
-                  className="bg-primary text-primary-foreground px-8 py-3 hover:bg-primary/90 transition-all font-medium uppercase tracking-wide"
                 >
                   {editingId ? 'Oppdater' : 'Publiser'}
-                </button>
-                <button
+                </Button>
+                <Button
                   type="button"
                   onClick={() => {
                     setShowForm(false)
                     setEditingId(null)
-                    setFormData({ title: '', author: '', year: '', content: '' })
+                    storyForm.reset()
                   }}
-                  className="bg-secondary text-secondary-foreground px-8 py-3 hover:bg-secondary/90 transition-all font-medium uppercase tracking-wide"
+                  variant="secondary"
                 >
                   Avbryt
-                </button>
+                </Button>
               </div>
             </form>
           </CardContent>
@@ -341,20 +338,22 @@ function Stories() {
                   </div>
                 </div>
                 <div className="flex gap-2">
-                  <button
+                  <Button
                     onClick={() => handleEdit(story)}
-                    className="p-2 text-muted-foreground hover:bg-muted transition-all"
+                    variant="ghost"
+                    size="icon-sm"
                     title="Rediger historie"
                   >
                     <Edit2 className="w-5 h-5" />
-                  </button>
-                  <button
+                  </Button>
+                  <Button
                     onClick={() => handleDelete(story.id)}
-                    className="p-2 text-muted-foreground hover:bg-muted transition-all"
+                    variant="ghost"
+                    size="icon-sm"
                     title="Slett historie"
                   >
                     <Trash2 className="w-5 h-5" />
-                  </button>
+                  </Button>
                 </div>
               </div>
               <p className="text-card-foreground leading-relaxed whitespace-pre-wrap">{story.content}</p>

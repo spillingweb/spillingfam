@@ -1,4 +1,5 @@
 import { Menu } from 'lucide-react'
+import { Button } from '@/components/ui/button'
 
 interface HamburgerButtonProps {
   onClick: () => void
@@ -7,16 +8,14 @@ interface HamburgerButtonProps {
 
 export function HamburgerButton({ onClick, isHomePage }: HamburgerButtonProps) {
   return (
-    <button
+    <Button
       onClick={onClick}
-      className={`md:hidden p-2.5 transition-all ${
-        isHomePage
-          ? 'text-white/90 hover:text-white'
-          : 'text-accent-foreground/80 hover:text-accent-foreground hover:bg-background/30'
-      }`}
+      className="md:hidden"
+      variant="ghost"
+      size="icon-sm"
       aria-label="Open menu"
     >
       <Menu className="w-6 h-6" />
-    </button>
+    </Button>
   )
 }
